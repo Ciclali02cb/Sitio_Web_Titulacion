@@ -1,0 +1,169 @@
+body {
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #fffde7; /* Fondo amarillo huevo */
+}
+
+.container {
+  background-color: #ffffff; /* Fondo blanco para el contenedor */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 80%; /* Ocupa el 80% del ancho en pantallas grandes */
+  max-width: 600px; /* Ancho máximo para evitar que se estire demasiado */
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333; /* Color oscuro para el título */
+  background-color: #d2b48c; /* Fondo amarillo café para el título */
+  padding: 10px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+form p {
+  margin-bottom: 15px;
+}
+
+form label {
+  display: block;
+  margin-bottom: 5px;
+  color: #555; /* Color gris oscuro para las etiquetas */
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="number"],
+form textarea,
+form input[type="file"],
+form select {
+  width: calc(100% - 12px); /* Ajuste para el padding */
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 16px; /* Tamaño de fuente más grande */
+}
+
+form input[type="submit"] {
+  background-color: #ffeb3b; /* Color amarillo para el botón */
+  color: #333; /* Texto oscuro para mejor contraste */
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%; /* Ocupa todo el ancho */
+  margin-top: 20px; /* Agrega un margen superior */
+  font-size: 16px; /* Tamaño de fuente más grande */
+}
+
+form input[type="submit"]:hover {
+  background-color: #fdd835; /* Color amarillo más oscuro al pasar el mouse */
+}
+
+/* Estilos para los mensajes de error */
+.errorlist {
+  color: #d32f2f; /* Color rojo para errores */
+  list-style: none;
+  padding: 0;
+  margin: 0 0 10px 0;
+}
+
+/* Estilos para los campos requeridos */
+.required label:after {
+  content: " *";
+  color: #d32f2f; /* Color rojo para el asterisco */
+}
+
+/* Estilos para el mensaje de "Ya has respondido" */
+.alert {
+  background-color: #ffeb3b; /* Fondo amarillo para el mensaje */
+  color: #333; /* Texto oscuro para mejor contraste */
+  padding: 15px;
+  border-radius: 4px;
+  text-align: center;
+  margin-bottom: 20px; /* Margen inferior para separar del contenido */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.container_list {
+  margin: 1cm; /* Margen de 1 cm en todos los lados */
+  background-color: #ffffff; /* Fondo blanco */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+th, td {
+  border: 1px solid black; /* Líneas negras */
+  padding: 10px;
+  text-align: left;
+}
+
+th {
+  background-color: #4CAF50; /* Verde oscuro */
+  color: white;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+tr:hover {
+  background-color: #f1f1f1;
+}
+.crear-btn, .buscar-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  color: white;
+  background-color: #4CAF50;
+  text-decoration: none;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  margin-bottom: 20px;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+  text-align: center;
+}
+
+.crear-btn:hover, .buscar-btn:hover {
+  background-color: #45a049; /* Verde más oscuro */
+}
+
+/* Botón de búsqueda dentro de formulario */
+.form-buscar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.input-buscar {
+  flex: 1;
+  margin-right: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+@media (max-width: 600px) {
+  .container {
+      width: 95%; /* Ocupa casi todo el ancho en pantallas pequeñas */
+      padding: 15px;
+  }
+}
