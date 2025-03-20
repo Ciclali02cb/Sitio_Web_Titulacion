@@ -23,6 +23,7 @@
                     <th>Apellido Paterno</th>
                     <th>Apellido Materno</th>
                     <th>Cédula</th>
+                    <th>Opciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -34,6 +35,8 @@
                     <td>{{ profesor.apellidoMaterno }}</td>
                     <td>{{ profesor.cedulaProfesor }}</td>
                 </tr>
+                <a href="{% url 'modificar' profesor.id %}" class="modificar-btn">Mofificar</a>
+                <a href="{% url 'eliminar' profesor.id %}" class="eliminar-btn">Eliminar</a>
                 {% empty %}
                 <tr>
                     <td colspan="2">No se encontraron resultados.</td>
