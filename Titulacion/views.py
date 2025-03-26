@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect # type: ignore
+from django.shortcuts import render, redirect , get_object_or_404# type: ignore
 from .models import Titulacion
 from .forms import TitulacionForm
 from .models import Profesor
