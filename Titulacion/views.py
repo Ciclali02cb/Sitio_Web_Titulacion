@@ -39,13 +39,15 @@ def update_titulacion(request, pk):
             return redirect('lista_titulaciones')  # Redirige a la lista
     else:
         form = TitulacionForm(instance=titulacion)
-    return render(request, 'titulacion_form.html', {'form': form})
+    return render(request, 'titulacion_form.html', {'form': form, "titulacion" : titulacion})
 
 def delete_titulacion(request, pk):
     titulacion = get_object_or_404(Titulacion, pk=pk)
     if request.method == 'POST':
         titulacion.delete()
         return redirect('lista_titulaciones')  # Redirige a la lista
+    else:
+        form = TitulacionForm(instance=titulacion)
     return render(request, 'confirmar_eliminar.html', {'titulacion': titulacion})  
 
 def confirm_titulacion(request):

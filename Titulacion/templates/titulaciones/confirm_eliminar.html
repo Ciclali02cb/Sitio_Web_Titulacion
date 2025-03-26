@@ -6,7 +6,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>¿Eliminar "{{ titulacion.nombre }}"?</h1>
+        <h1>¿Eliminar "{{ titulacion.matricula }} - {{ titulacion.titulo_proyecto }}"?</h1>
         <form method="post">
             {% csrf_token %}
             <button type="submit" class="btn btn-danger">Sí, eliminar</button>
