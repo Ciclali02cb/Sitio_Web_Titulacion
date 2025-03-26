@@ -35,8 +35,8 @@
                     <td>{{ titulacion.carrera }}</td>
                     <td>{{ titulacion.titulo_proyecto }}</td>
                     <td><a href="{{ titulacion.archivo.url }}">Descargar</a></td>
-                    <td><a href="{% url 'update' titulacion.pk %}">Modificar</a></td>
-                    <td><a href="{% url 'delete' titulacion.pk %}">Eliminar</a></td>
+                    <td><a href="{% url 'update_titulacion' titulacion.pk %}">Modificar</a></td>
+                    <td><a href="{% url 'delete_titulacion' titulacion.pk %}">Eliminar</a></td>
                 </tr>
                 {% empty %}
                 <tr>
