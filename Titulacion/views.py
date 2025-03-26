@@ -30,6 +30,24 @@ def agregar_profesor(request):
         form = ProfesorForm()
     return render(request, 'titulaciones/profesor_form.html', {'form': form})
 
+def update_titulacion(request, pk):
+    titulacion = get_object_or_404(Titulacion, pk=pk)
+    if request.method == 'POST':
+        form = TitulacionForm(request.POST, request.FILES, instance=titulacion)
+        if form.is_valid():
+            form.save()
+            return redirect('lista_titulaciones')  # Redirige a la lista
+    else:
+        form = TitulacionForm(instance=titulacion)
+    return render(request, 'titulacion_form.html', {'form': form})
+
+def delete_titulacion(request, pk):
+    titulacion = get_object_or_404(Titulacion, pk=pk)
+    if request.method == 'POST':
+        titulacion.delete()
+        return redirect('lista_titulaciones')  # Redirige a la lista
+    return render(request, 'confirmar_eliminar.html', {'titulacion': titulacion})  
+
 def confirm_titulacion(request):
     return render(request, 'titulaciones/confirm_titulacion.html')
 def create_titulacion(request):
