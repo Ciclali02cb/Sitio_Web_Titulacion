@@ -3,9 +3,16 @@ from .models import Titulacion
 from .forms import TitulacionForm
 from .models import Profesor
 from .forms import ProfesorForm
+from django.db.models import Q
 
 def titulacion_list(request):
-    titulaciones = Titulacion.objects.all()
+    query = request.GET.get('q')
+    if query:
+        titulaciones = Titulacion.objects.filter(
+            Q(matricula_icontains=query) | Q(nombre_icontains=query)
+        )
+    else:
+        titulaciones = Titulacion.objects.all()
     context = {
         'titulaciones': titulaciones
     }
@@ -36,7 +43,7 @@ def update_titulacion(request, pk):
         form = TitulacionForm(request.POST, request.FILES, instance=titulacion)
         if form.is_valid():
             form.save()
-            return redirect('lista_titulaciones')  # Redirige a la lista
+            return redirect('lista_titulaciones')  
     else:
         form = TitulacionForm(instance=titulacion)
     return render(request, 'titulacion_form.html', {'form': form, "titulacion" : titulacion})
@@ -45,7 +52,7 @@ def delete_titulacion(request, pk):
     titulacion = get_object_or_404(Titulacion, pk=pk)
     if request.method == 'POST':
         titulacion.delete()
-        return redirect('lista_titulaciones')  # Redirige a la lista
+        return redirect('lista_titulaciones') 
     else:
         form = TitulacionForm(instance=titulacion)
     return render(request, 'confirmar_eliminar.html', {'titulacion': titulacion})  
@@ -63,19 +70,3 @@ def create_titulacion(request):
     else:
         form = TitulacionForm()
     return render(request, 'titulaciones/titulacion_form.html', {'form': form})
-
-def buscar_titulaciones(request):
-    query = request.GET.get('query', '')  # Obtiene el valor de búsqueda del formulario
-    resultados = Titulacion.objects.filter(
-        nombre__icontains=query
-    ) | Titulacion.objects.filter(
-        correo__icontains=query
-    ) | Titulacion.objects.filter(
-        matricula__icontains=query
-    ) | Titulacion.objects.filter(
-        carrera__icontains=query
-    ) | Titulacion.objects.filter(
-        titulo_proyecto__icontains=query
-    ) if query else Titulacion.objects.all()
-
-    return render(request, 'buscar_titulaciones.html', {'resultados': resultados, 'query': query})

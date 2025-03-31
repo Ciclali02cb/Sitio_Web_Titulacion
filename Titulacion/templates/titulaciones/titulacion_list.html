@@ -12,7 +12,7 @@
     <div class="container_list">
         <h1>Formulario Para Titulación</h1>
         <form method="GET" action="{% url 'buscar_titulaciones' %}" class="form-buscar">
-            <input type="text" name="query" value="{{ query }}" placeholder="Buscar por nombre, correo, matrícula..." class="input-buscar">
+            <input type="text" name="q"  placeholder="Buscar por nombre, correo, matrícula..." class="input-buscar">
             <button type="submit" class="buscar-btn">Buscar</button>
         </form>
         <table>
@@ -24,6 +24,7 @@
                     <th>Carrera</th>
                     <th>Título</th>
                     <th>Archivo</th>
+                    <th colspan="2">Opciones</th>
                 </tr>
             </thead>
             <tbody>
