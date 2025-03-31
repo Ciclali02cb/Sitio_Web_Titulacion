@@ -3,7 +3,6 @@ from .models import Titulacion
 from .forms import TitulacionForm
 from .models import Profesor
 from .forms import ProfesorForm
-from django.db.models import Q
 
 def titulacion_list(request):
     titulaciones = Titulacion.objects.all()
@@ -64,3 +63,19 @@ def create_titulacion(request):
     else:
         form = TitulacionForm()
     return render(request, 'titulaciones/titulacion_form.html', {'form': form})
+
+def buscar_titulaciones(request):
+    query = request.GET.get('query', '')  # Obtiene el valor de búsqueda del formulario
+    resultados = Titulacion.objects.filter(
+        nombre__icontains=query
+    ) | Titulacion.objects.filter(
+        correo__icontains=query
+    ) | Titulacion.objects.filter(
+        matricula__icontains=query
+    ) | Titulacion.objects.filter(
+        carrera__icontains=query
+    ) | Titulacion.objects.filter(
+        titulo_proyecto__icontains=query
+    ) if query else Titulacion.objects.all()
+
+    return render(request, 'buscar_titulaciones.html', {'resultados': resultados, 'query': query})
