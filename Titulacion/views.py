@@ -6,13 +6,7 @@ from .forms import ProfesorForm
 from django.db.models import Q
 
 def titulacion_list(request):
-    query = request.GET.get('q')
-    if query:
-        titulaciones = Titulacion.objects.filter(
-            Q(matricula_icontains=query) | Q(nombre_icontains=query)
-        )
-    else:
-        titulaciones = Titulacion.objects.all()
+    titulaciones = Titulacion.objects.all()
     context = {
         'titulaciones': titulaciones
     }
