@@ -23,7 +23,7 @@
                     <th>Apellido Paterno</th>
                     <th>Apellido Materno</th>
                     <th>Cédula</th>
-                    <th>Opciones</th>
+                    <th colspan="2">Opciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -34,10 +34,12 @@
                     <td>{{ profesor.apellidoPaterno }}</td>
                     <td>{{ profesor.apellidoMaterno }}</td>
                     <td>{{ profesor.cedulaProfesor }}</td>
+                    <td><a href="{% url 'update_profesor' profesor.pk %}">Modificar</a></td>
+                    <td><a href="{% url 'delete_profesor' profesor.pk %}">Eliminar</a></td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="2">No se encontraron resultados.</td>
+                    <td colspan="7">No se encontraron resultados.</td>
                 </tr>
                 {% endfor %}
             </tbody>

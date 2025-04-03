@@ -4,20 +4,22 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agregar Profesor</title>
+    <title>{% if form.instance.pk %}Editar{% else %}Agregar{% endif %} Profesor</title>
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
 </head>
 
 <body>
     <div class="container">
-        <h1>Agregar Profesor</h1>
+        <h1>{% if form.instance.pk %}Editar{% else %}Agregar{% endif %} Profesor</h1>
         <form method="post">
             {% csrf_token %}
             {{ form.as_p }}
-            <input type="submit" value="Guardar" class="btn">
+            <div class="form-actions">
+                <button type="submit" class="submit-btn">Guardar</button>
+                <a href="{% url 'lista_profesores' %}" class="cancel-btn">Cancelar</a>
+            </div>
         </form>
-        <a href="{% url 'lista_profesores' %}" class="btn">Volver a la lista</a>
     </div>
 </body>
 

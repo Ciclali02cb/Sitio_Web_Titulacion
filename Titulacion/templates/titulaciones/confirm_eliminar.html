@@ -2,15 +2,33 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Confirmar Eliminación</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
 </head>
 <body>
-    <div class="container">
-        <h1>¿Eliminar "{{ titulacion.matricula }}"?</h1>
-        <form method="post">
+    <div class="container_delete">
+        <h1>Confirmar Eliminación</h1>
+        
+        <div class="delete-info">
+            <p class="warning-message">¡Advertencia! Esta acción eliminará permanentemente el registro y el archivo asociado.</p>
+            
+            <div class="student-details">
+                <p><strong>Nombre:</strong> {{ titulacion.nombre }}</p>
+                <p><strong>Matrícula:</strong> {{ titulacion.matricula }}</p>
+                <p><strong>Carrera:</strong> {{ titulacion.carrera }}</p>
+                <p><strong>Título del proyecto:</strong> {{ titulacion.titulo_proyecto }}</p>
+                <p><strong>Adjunta_tu_proyecto_final_PDF:</strong> {{ titulacion.archivo }}</p>
+            </div>
+        </div>
+
+        <form method="POST" class="delete-form">
             {% csrf_token %}
-            <button type="submit" class="btn btn-danger">Sí, eliminar</button>
-            <a href="{% url 'lista_titulaciones' %}" class="btn btn-secondary">Cancelar</a>
+            <div class="form-actions">
+                <button type="submit" class="delete-btn">Confirmar Eliminación</button>
+                <a href="{% url 'titulacion_list' %}" class="cancel-btn">Cancelar</a>
+            </div>
         </form>
     </div>
 </body>

@@ -1,23 +1,28 @@
 <!DOCTYPE html>
-<html lang="es">
-
+<html lang="es">  
 <head>
+    
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Titulacion </title>
-    {% load static %} 
+    {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
-   
 </head>
+
 <body>
     <div class="container">
-        <h1>Formulario Para Titulación</h1>
+        {% load static %}
+        <img src="{% static 'IMG/portada1.png' %}" alt="Portada de titulación" class="portada">
+
+        <h1>Tramite de Titulación Integral</h1>
+        <h4>Registra cuidadosamente tus datos</h4>
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
-            <input type="submit" value="Enviar"> </form>
+            <input type="submit" value="Enviar">
+            
+            
         </form>
-
     </div>
 </body>
 

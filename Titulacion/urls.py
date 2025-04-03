@@ -3,6 +3,7 @@ from Titulacion import views
 
 
 urlpatterns = [
+    path('', views.home_view, name='home'),
     path('list', views.titulacion_list, name='titulacion_list'),
     path('new', views.create_titulacion, name='titulacion_new'),
     path('confirm', views.confirm_titulacion, name='confirm_titulacion'),   
@@ -11,4 +12,6 @@ urlpatterns = [
     path('agregar', views.agregar_profesor, name='agregar_profesor'),
     path('editar/<int:pk>/', views.update_titulacion, name='update_titulacion'),
     path('eliminar/<int:pk>/', views.delete_titulacion, name='delete_titulacion'),
+    path('profesores/editar/<int:pk>/', views.update_profesor, name='update_profesor'),
+    path('profesores/eliminar/<int:pk>/', views.delete_profesor, name='delete_profesor'),
 ]

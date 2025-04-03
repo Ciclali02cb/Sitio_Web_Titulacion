@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Titulación - ITSA</title>
+    <style>
+        /* Estilos generales */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #FFFFFF; /* Fondo blanco */
+            color: #333333; /* Texto oscuro */
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Header institucional */
+        .header-institucional {
+            background-color: #E6F2FF; /* Azul muy claro */
+            padding: 15px 0;
+            border-bottom: 2px solid #B3D9FF;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logos-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .logo {
+            height: 80px;
+        }
+        
+        .institucion-texto {
+            text-align: right;
+            color: #0066CC; 
+        }
+        
+        .institucion-texto h1 {
+            font-size: 18px;
+            margin: 0;
+            font-weight: bold;
+        }
+        
+        .institucion-texto h2 {
+            font-size: 22px;
+            margin: 5px 0 0 0;
+            font-weight: bold;
+        }
+        
+        /* Header principal */
+        .header-principal {
+            background-color: #4DA6FF;
+            color: #FFFFFF; 
+            padding: 30px 0;
+            text-align: center;
+            border-bottom: 5px solid #B3D9FF; 
+        }
+        
+        .header-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
+        
+        /* Contenedor principal */
+        .main-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 102, 204, 0.1);
+            border: 1px solid #B3D9FF; 
+            margin-top: 30px;
+        }
+        
+        .section-title {
+            color: #0066CC; 
+            border-bottom: 2px solid #B3D9FF; 
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 24px;
+        }
+        
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 40px;
+        }
+        
+        .redirect-btn {
+            background-color: #4DA6FF;
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            text-align: center;
+            min-width: 220px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .redirect-btn:hover {
+            background-color: #0077E6; 
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 119, 230, 0.3);
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #0066CC; 
+            color: #FFFFFF; 
+            padding: 25px 0;
+            text-align: center;
+            margin-top: 50px;
+            font-size: 14px;
+        }
+        
+        footer p {
+            margin: 5px 0;
+        }
+        
+        /* Efectos adicionales */
+        .redirect-btn:nth-child(odd) {
+            background-color: #66B3FF; 
+        }
+        
+        .redirect-btn:nth-child(odd):hover {
+            background-color: #0080FF; 
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-institucional {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .logos-container {
+                justify-content: center;
+                margin-bottom: 15px;
+            }
+            
+            .institucion-texto {
+                text-align: center;
+            }
+            
+            .button-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .redirect-btn {
+                width: 100%;
+            }
+            
+            .header-title {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+{% load static %}
+<body>
+    
+    <div class="header-institucional">
+        <div class="logos-container">
+            <img src="{% static 'IMG/gobierno_mexico.png' %}" alt="Gobierno de México" class="logo">
+            <img src="{% static 'IMG/tecnm.jpg' %}" alt="Tecnológico Nacional de México" class="logo">
+            <img src="{% static 'IMG/educacion.png' %}" alt="Educacion" class="logo">
+            <img src="{% static 'IMG/itsa.png' %}" alt="Itsa" class="logo">
+        </div>
+    </div>
+    
+
+    <header class="header-principal">
+        <div class="container">
+            <div class="header-title">Portal de Titulación ITSA</div>
+        </div>
+    </header>
+    
+
+    <div class="container">
+        <div class="main-content">
+            <h2 class="section-title">Accesos Directos</h2>
+            
+            <div class="button-container">
+                <!-- Formulario de Titulación -->
+                <a href="{% url 'titulacion_new' %}" class="redirect-btn">Formulario de Titulación</a>
+                
+                <!-- Lista de Estudiantes -->
+                <a href="{% url 'titulacion_list' %}" class="redirect-btn">Lista de Estudiantes</a>
+                
+                <!-- Agregar Profesor -->
+                <a href="{% url 'agregar_profesor' %}" class="redirect-btn">Agregar Profesor</a>
+                
+                <!-- Lista de Profesores -->
+                <a href="{% url 'lista_profesores' %}" class="redirect-btn">Lista de Profesores</a>
+                
+                <!-- Inicio de sesión (debes crear esta vista) -->
+                <a href="#" class="redirect-btn">Inicio de sesión</a>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>Instituto Tecnológico Superior de Acayucan</p>
+            <p>© 2023 Todos los derechos reservados</p>
+        </div>
+    </footer>
+</body>
+</html>

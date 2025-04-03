@@ -10,43 +10,58 @@
 </head>
 <body>
     <div class="container_list">
-        <h1>Formulario Para Titulación</h1>
+        <h1>Lista de Alumnos</h1>
         <form method="GET" action="{% url 'buscar_titulaciones' %}" class="form-buscar">
             <input type="text" name="q" value="{{ query }}" placeholder="Buscar por nombre, correo, matrícula..." class="input-buscar">
             <button type="submit" class="buscar-btn">Buscar</button>
         </form>
-        <table>
+        <table class="titulacion-table">
             <thead>
                 <tr>
-                    <th>Nombre</th>
+                   
                     <th>Correo</th>
                     <th>Matrícula</th>
+                    <th>Nombres</th>
+                    <th>Apellido Paterno</th>
+                    <th>Apellido Materno</th>
                     <th>Carrera</th>
-                    <th>Título</th>
-                    <th>Archivo</th>
-                    <th colspan="2">Opciones</th>
+                    <th>Edad</th>
+                    <th>Promedio</th>
+                    <th>Nombre del Proyecto</th>
+                    <th>Asesor</th>
+                    <th>Nombre del Revisor 1</th>
+                    <th>Nombre del Revisor 2</th>
+                    <th colspan="3">Opciones</th>
                 </tr>
             </thead>
             <tbody>
                 {% for titulacion in titulaciones %}
                 <tr>
-                    <td>{{ titulacion.nombre }}</td>
                     <td>{{ titulacion.correo }}</td>
                     <td>{{ titulacion.matricula }}</td>
+                    <td>{{ titulacion.nombre }}</td>
+                    <td>{{ titulacion.apellido_paterno }}</td>
+                    <td>{{ titulacion.apellido_materno }}</td>
                     <td>{{ titulacion.carrera }}</td>
-                    <td>{{ titulacion.titulo_proyecto }}</td>
+                    <td>{{ titulacion.edad }}</td>
+                    <td>{{ titulacion.promedio }}</td>
+                    <td>{{ titulacion.nombre_del_proyecto }}</td>
+                    <td>{{ titulacion.asesor }}</td>
+                    <td>{{ titulacion.nombre_del_revisor_1 }}</td>
+                    <td>{{ titulacion.nombre_del_revisor_2 }}</td>
                     <td><a href="{{ titulacion.archivo.url }}">Descargar</a></td>
                     <td><a href="{% url 'update_titulacion' titulacion.pk %}">Modificar</a></td>
                     <td><a href="{% url 'delete_titulacion' titulacion.pk %}">Eliminar</a></td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="6">No se encontraron resultados.</td>
+                    <td colspan="15">No se encontraron resultados.</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
         <a href="{% url 'titulacion_new' %}" class="crear-btn">Crear Nueva Titulación</a>
+        <a class="crear-btn">Generar PDF</a>
     </div>
 </body>
 </html>
