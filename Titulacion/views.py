@@ -3,15 +3,30 @@ from .models import Titulacion
 from .forms import TitulacionForm
 from .models import Profesor
 from .forms import ProfesorForm
+from django.db.models import Q
 
 def home_view(request):
     return render(request, 'titulaciones/index.html')
 def titulacion_list(request):
-    titulaciones = Titulacion.objects.all()
+    query = request.GET.get('q', '')
+    
+    if query:
+        titulaciones = Titulacion.objects.filter(
+            Q(nombre__icontains=query) |
+            Q(matricula__icontains=query) |
+            Q(apellido_paterno__icontains=query) |
+            Q(apellido_materno__icontains=query)
+        )
+    else:
+        titulaciones = Titulacion.objects.all()
+    
     context = {
-        'titulaciones': titulaciones
+        'titulaciones': titulaciones,
+        'query': query
     }
     return render(request, 'titulaciones/titulacion_list.html', context)
+
+
 def update_titulacion(request, pk):
     titulacion = get_object_or_404(Titulacion, pk=pk)
     if request.method == 'POST':
@@ -30,6 +45,7 @@ def update_titulacion(request, pk):
         'form': form,
         'titulacion': titulacion
     })
+    
 def delete_titulacion(request, pk):
     titulacion = get_object_or_404(Titulacion, pk=pk)
     if request.method == 'POST':
@@ -53,29 +69,21 @@ def create_titulacion(request):
         form = TitulacionForm()
     return render(request, 'titulaciones/titulacion_form.html', {'form': form})
 
-
-def buscar_titulaciones(request):
-    query = request.GET.get('query', '')  # Obtiene el valor de búsqueda del formulario
-    resultados = Titulacion.objects.filter(
-        nombre__icontains=query
-    ) | Titulacion.objects.filter(
-        correo__icontains=query
-    ) | Titulacion.objects.filter(
-        matricula__icontains=query
-    ) | Titulacion.objects.filter(
-        carrera__icontains=query
-    ) | Titulacion.objects.filter(
-        titulo_proyecto__icontains=query
-    ) if query else Titulacion.objects.all()
-
-    return render(request, 'buscar_titulaciones.html', {'resultados': resultados, 'query': query})
-
 #PROFESORES EN EL ITSA
 # Vista para listar profesores
 def lista_profesores(request):
-    profesores = Profesor.objects.all()
+    query = request.GET.get('query', '')
+    
+    if query:
+        profesores = Profesor.objects.filter(
+            Q(nombreProfesor__icontains=query) | 
+            Q(cedulaProfesor__icontains=query))
+    else:
+        profesores = Profesor.objects.all()
+    
     context = {
-        'profesores': profesores
+        'profesores': profesores,
+        'query': query
     }
     return render(request, 'titulaciones/profesor_list.html', context)
 
