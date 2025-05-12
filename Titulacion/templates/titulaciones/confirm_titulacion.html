@@ -1,20 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Titulación</title>
-    {% load static %} 
-    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}"> 
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <style>
+        /* Estilos para el mensaje de alerta */
+        .alert {
+            background-color: #fff3cd; /* Fondo amarillo claro */
+            color: #856404; /* Texto oscuro para contraste */
+            padding: 15px;
+            margin-bottom: 20px;
+            border-left: 5px solid #ffeeba; /* Borde lateral amarillo */
+            border-radius: 4px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        /* Contenedor principal */
+        .container {
+            text-align: center;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        /* Estilo para el botón */
+        .btn-regresar {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            cursor: pointer;
+            margin-top: 20px;
+            display: inline-block;
+        }
+        
+        /* Separador visual */
+        .separator {
+            border-top: 1px solid #dee2e6;
+            margin: 20px 0;
+        }
+    </style>
 </head>
 <body>
-    <div class="alert">
-        Ya has respondido. Solo puedes reiterar este formulario una vez.
-        <br>
-        Ponte en contacto con el propietario del formulario si crees que se trata de un error.
-    </div>
-    <div class="container">
-        <h1>Tus datos han sido guardados</h1>
-        <p>¡Gracias!</p>
+    <div class="main-container">
+              
+        <!-- Contenido principal -->
+        <div class="container">
+            <h1>Tus datos han sido guardados</h1>
+            <div class="separator"></div>
+            <p>¡Gracias!</p>
+            
+            <!-- Mensaje de alerta amarillo -->
+        <div class="alert">
+            Ya has respondido. Solo puedes reiterar este formulario una vez.
+            <br>
+            Ponte en contacto con el propietario 
+            <br>
+            del formulario si crees que se trata de un error.
+        </div>
+         <!-- Botón de regreso que redirige a 'home' -->
+            <a href="{% url 'home' %}" class="btn-regresar">Regresar</a>
+        </div>
     </div>
 </body>
-
 </html>

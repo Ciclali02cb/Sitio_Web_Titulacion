@@ -13,6 +13,13 @@ class Titulacion(models.Model):
     promedio = models.IntegerField(default=0)
     nombre_del_proyecto = models.CharField(max_length=205, default="")
     archivo = models.FileField(upload_to='archivo')
+    telefono = models.CharField(max_length=10, blank=True, null=True)
+    dialecto = models.CharField(
+        max_length=100,
+        blank=True,
+        null=True,
+        verbose_name="¿Cuál dialecto?"
+    )
     carrera = models.CharField(max_length=100, choices=[
         ('INGENIERÍA BIOQUÍMICA', 'INGENIERÍA BIOQUÍMICA'),
         ('INGENIERÍA CIVIL', 'INGENIERÍA CIVIL'),
@@ -451,13 +458,10 @@ class Titulacion(models.Model):
         ('Extensión Hueyapan', 'Extensión Hueyapan'),
         ('Extensión Uxpanapan', 'Extensión Uxpanapan')
         ],default='Escolarizado')
-    dialecto = models.CharField(max_length=2, choices=[
-        ('Si', 'Si'),
-        ('No', 'No')
-        ], default='Si')
+    
         
     def __str__(self):
-        return f"{self.correo} {self.matricula}{self.nombre} {self.carrera} {self.apellido_paterno} {self.nombre_del_proyecto} {self.apellido_materno}  {self.edad} {self.promedio} {self.opcion_de_titulacion} {self.nombre_del_asesor}{self.nombre_del_revisor_1}{self.nombre_del_revisor_2} {self.discapacidad} {self.genero} {self.modalidad} {self.dialecto}"
+        return f"{self.correo} {self.matricula}{self.nombre} {self.carrera} {self.apellido_paterno} {self.nombre_del_proyecto} {self.apellido_materno}  {self.edad} {self.promedio} {self.opcion_de_titulacion} {self.nombre_del_asesor}{self.nombre_del_revisor_1}{self.nombre_del_revisor_2} {self.discapacidad} {self.genero} {self.modalidad} {self.dialecto} {self.telefono}"
     #Eliminar archivo
     def delete(self, *args, **kwargs):
         # Elimina el archivo cuando se borra el objeto

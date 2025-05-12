@@ -7,9 +7,13 @@ class TitulacionForm(forms.ModelForm):
     class Meta:
         model = Titulacion
         fields = ['correo','matricula','nombre','apellido_paterno','apellido_materno',
-                  'carrera','edad','promedio','nombre_del_proyecto','archivo',
+                  'carrera','edad', 'telefono', 'dialecto','promedio',
+                  'nombre_del_proyecto','archivo',
                   'opcion_de_titulacion', 'nombre_del_asesor','nombre_del_revisor_1',
-                  'nombre_del_revisor_2','lugar','discapacidad', 'genero','modalidad', 'dialecto',  
+                  'nombre_del_revisor_2','lugar','discapacidad', 'genero','modalidad', 
+                  
+                  
+                   
         ]
         labels = {
             'correo': 'Correo Electrónico',
@@ -19,6 +23,8 @@ class TitulacionForm(forms.ModelForm):
             'apellido_materno': 'Apellido Materno',
             'carrera': 'Carrera',
             'edad': 'Edad',
+            'telefono': 'Telefono',
+            'dialecto': 'Dialecto',
             'promedio': 'Promedio',
             'nombre_del_proyecto': 'NOMBRE DEL PROYECTO (Debe respetar el uso de minúsculas y mayúsculas según corresponda)',
             'archivo': 'Adjunta tu proyecto final en formato PDF (el archivo debe pesar máximo 10mb)',
@@ -30,7 +36,6 @@ class TitulacionForm(forms.ModelForm):
             'discapacidad': '¿Tiene alguna discapacidad?',
             'genero': 'Género',
             'modalidad': 'Modalidad',
-            'dialecto' : 'Dialecto',
         }
 
 class ProfesorForm(forms.ModelForm):

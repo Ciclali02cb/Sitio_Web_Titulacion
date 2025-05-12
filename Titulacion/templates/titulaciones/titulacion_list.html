@@ -9,13 +9,18 @@
     <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
 </head>
 <body>
-    <div class="container_list">
-        <h1>Lista de Alumnos</h1>
-        <form method="GET" action="{% url 'titulacion_list' %}" class="form-buscar">
+       
+        <div class="container_list">
+            <h1>Lista de Alumnos</h1>
+            <form method="GET" action="{% url 'titulacion_list' %}" class="form-buscar">
             <input type="text" name="q" value="{{ query }}" placeholder="Buscar por nombre, correo, matrícula..." class="input-buscar">
             <button type="submit" class="buscar-btn">Buscar</button>
         </form>
-        <a href=" " class="crear-btn">Crear Nueva Titulación</a>
+            <!-- Contenedor para los botones -->
+            <div class="botones-superiores">
+                <a href=" " class="crear-btn">Crear Nueva Titulación</a>
+                <a href="{% url 'home' %}" class="regresar-btn">← Regresar</a>
+            </div>
         <table class="titulacion-table">
             <thead>
                 <tr>
@@ -27,13 +32,15 @@
                     <th>Apellido Materno</th>
                     <th>Carrera</th>
                     <th>Edad</th>
+                    <th>Telefono</th>
+                    <th>Dialecto</th>          <!-- Nueva columna -->
                     <th>Promedio</th>
                     <th>Nombre del Proyecto</th>
                     <th>Asesor</th>
                     <th>Nombre del Revisor 1</th>
                     <th>Nombre del Revisor 2</th>
                     <th>Archivo</th>
-                    <th colspan="2">Opciones</th>
+                    <th colspan="1">Opción</th>
                 </tr>
             </thead>
             <tbody>
@@ -46,13 +53,15 @@
                     <td>{{ titulacion.apellido_materno }}</td>
                     <td>{{ titulacion.carrera }}</td>
                     <td>{{ titulacion.edad }}</td>
+                    <td> {{ titulacion.telefono }}</td>
+                    <!-- Nuevos campos: dialecto -->
+                    <td>{{ titulacion.dialecto|default:"-" }}</td>
                     <td>{{ titulacion.promedio }}</td>
                     <td>{{ titulacion.nombre_del_proyecto }}</td>
-                    <td>{{ titulacion.asesor }}</td>
+                    <td>{{ titulacion.nombre_del_asesor }}</td>
                     <td>{{ titulacion.nombre_del_revisor_1 }}</td>
                     <td>{{ titulacion.nombre_del_revisor_2 }}</td>
                     <td><a href="{{ titulacion.archivo.url }}">Descargar</a></td>
-                    <td><a href="{% url 'update_titulacion' titulacion.pk %}">Modificar</a></td>
                     <td><a href="{% url 'delete_titulacion' titulacion.pk %}">Eliminar</a></td>
                 </tr>
                 {% empty %}
@@ -62,8 +71,5 @@
                 {% endfor %}
             </tbody>
         </table>
-     
-        
-    </div>
 </body>
 </html>

@@ -6,28 +6,95 @@
     <title>Confirmar Eliminación</title>
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <style>
+        /* Estilos adicionales para la disposición */
+        .container_delete {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .warning-message {
+            background-color: #fff3cd; /* Amarillo claro */
+            color: #856404;
+            padding: 15px;
+            border-radius: 4px;
+            border-left: 5px solid #ffeeba;
+            margin-bottom: 20px;
+        }
+        
+        .student-details {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        
+        .student-details p {
+            margin: 8px 0;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .delete-btn {
+            background-color: #dc3545;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .regresar-bnt {
+            background-color: #35a7dc;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .cancel-btn {
+            background-color: #6c757d;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 4px;
+            text-decoration: none;
+            display: inline-block;
+        }
+    </style>
 </head>
 <body>
     <div class="container_delete">
         <h1>Confirmar Eliminación</h1>
         
         <div class="delete-info">
-            <p class="warning-message">¡Advertencia! Esta acción eliminará permanentemente el registro y el archivo asociado.</p>
+            <!-- Mensaje de advertencia en amarillo -->
+            <div class="warning-message">
+                ¡Advertencia! Esta acción eliminará permanentemente el registro y el archivo asociado.
+            </div>
             
+            <!-- Datos del estudiante en una sola columna -->
             <div class="student-details">
-                <p><strong>Nombre:</strong> {{ titulacion.nombre }}</p>
+                <p><strong>Nombre:</strong> {{ titulacion.nombre }} {{titulacion.apellido_paterno}} {{titulacion.apellido_materno}}</p>
+                
                 <p><strong>Matrícula:</strong> {{ titulacion.matricula }}</p>
                 <p><strong>Carrera:</strong> {{ titulacion.carrera }}</p>
-                <p><strong>Título del proyecto:</strong> {{ titulacion.titulo_proyecto }}</p>
-                <p><strong>Adjunta_tu_proyecto_final_PDF:</strong> {{ titulacion.archivo }}</p>
+                <p><strong>Título del proyecto:</strong> {{ titulacion.nombre_del_proyecto }}</p>
+                <p><strong>Archivo adjunto:</strong> {{ titulacion.archivo }}</p>
             </div>
         </div>
 
+        <!-- Botones de acción -->
         <form method="POST" class="delete-form">
             {% csrf_token %}
             <div class="form-actions">
                 <button type="submit" class="delete-btn">Confirmar Eliminación</button>
                 <a href="{% url 'titulacion_list' %}" class="cancel-btn">Cancelar</a>
+              
             </div>
         </form>
     </div>
