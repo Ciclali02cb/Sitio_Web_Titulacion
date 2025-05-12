@@ -1,0 +1,170 @@
+<!-- templates/acta_examen_pdf.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.5;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            padding: 20px 0;
+        }
+        .page-container {
+            width: 21.59cm;
+            min-height: 27.94cm;
+            padding: 2cm;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            text-decoration: underline;
+        }
+        .text-justify {
+            text-align: justify;
+            margin-bottom: 15px;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .firmas {
+            margin-top: 50px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .firma {
+            text-align: center;
+            width: 48%;
+            border-top: 1px solid black;
+            margin-top: 60px;
+            padding: 0 5px;
+            box-sizing: border-box;
+        }
+        .firma-single {
+            width: 100%;
+            text-align: center;
+            border-top: 1px solid black;
+            margin-top: 60px;
+            padding: 0 5px;
+            box-sizing: border-box;
+        }
+        .foto-container {
+            float: right;
+            margin: 0 0 15px 15px;
+            width: 120px;
+        }
+        .foto-ovalada {
+            width: 100%;
+            height: auto;
+            border-radius: 50%;
+            border: 2px solid #000;
+            object-fit: cover;
+        }
+        .clearfix {
+            clear: both;
+        }
+        @media print {
+            body {
+                background-color: transparent;
+                padding: 0;
+            }
+            .page-container {
+                box-shadow: none;
+                padding: 1.5cm;
+                width: auto;
+                height: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <div class="header">
+            <p>GOBIERNO DEL ESTADO DE VERACRUZ DE IGNACIO DE LA LLAVE</p>
+            <p>INSTITUTO TECNOLÓGICO SUPERIOR DE ACAYUCAN</p>
+            <p class="title">ACTA DE EXAMEN PROFESIONAL</p>
+        </div>
+        
+        <div class="foto-container">
+            
+        </div>
+        
+        <p class="text-justify">
+            En la Ciudad de Acayucan, Ver., a los {{ acta.fecha_examen|date:"d" }} días del mes de 
+            {{ acta.fecha_examen|date:"F" }} de {{ acta.fecha_examen|date:"Y" }}, siendo las 
+            {{ acta.hora_inicio|time:"H:i" }} horas, se reunieron en La Sala de Titulación, 
+            Virtual del Instituto Tecnológico Superior de Acayucan, clave 30EIT0010B, los integrantes del Jurado.
+        </p>
+        
+        <p class="text-justify">Presidente (a): {{ titulacion.nombre_del_asesor }}</p>
+        <p class="text-justify">Secretario (a): {{ titulacion.nombre_del_revisor_1 }}</p>
+        <p class="text-justify">Vocal: {{ titulacion.nombre_del_revisor_2 }}</p>
+        
+        <div class="clearfix"></div>
+        
+        <p class="text-justify">
+            Y de acuerdo a las disposiciones reglamentarias en vigor sobre la Titulación Integral, se
+            procedió a efectuar el Acto de Recepción Profesional a el (la)
+            C. {{ titulacion.nombre }} {{titulacion.apellido_paterno}} {{titulacion.apellido_materno}}. No. de Control
+            {{ titulacion.matricula }} egresado (a) del Instituto Tecnológico Superior de
+            Acayucan, pasante de la carrera de
+            {{ titulacion.carrera }}.
+        </p>
+        
+        <p class="text-justify">
+            Tomando en cuenta los integrantes del Jurado, el contenido del Trabajo Profesional,
+            cuyo tema es: {{ titulacion.nombre_del_proyecto }}
+        </p>
+        
+        <p class="text-justify">
+            y la réplica del mismo, dictaminó que fuera {{ acta.resultado }}
+        </p>
+        
+        <p class="text-justify">
+            El (la) Presidente (a) del Jurado le hizo saber al sustentante el resultado obtenido,
+            el Código de Ética Profesional y le tomó la Protesta de Ley. Dándose por terminado
+            el Acto a las {{ acta.hora_fin|time:"H:i" }} horas, se asentó la presente en el libro para Actas de Examen
+            Profesional por Titulación Integral No. {{ acta.libro }} a las {{ acta.foja }} fojas, autorizado por la H.
+            Junta Directiva del Instituto Tecnológico Superior de Acayucan fecha 29
+            de marzo de 2022 y una vez escrita, leída y aprobada la firmaron
+            para constancia las personas que en el acto intervinieron.
+        </p>
+        
+        <div class="firmas">
+            <div class="firma">
+                <p>PRESIDENTE (A)</p>
+                <p>{{ acta.presidente.nombre_completo }}</p>
+                <p>CÉDULA PROFESIONAL: {{ acta.presidente.cedula }}</p>
+            </div>
+            <div class="firma">
+                <p>SECRETARIO (A)</p>
+                <p>{{ acta.secretario.nombre_completo }}</p>
+                <p>CÉDULA PROFESIONAL: {{ acta.secretario.cedula }}</p>
+            </div>
+        </div>
+        
+        <div class="firmas">
+            <div class="firma">
+                <p>VOCAL</p>
+                <p>{{ acta.vocal.nombre_completo }}</p>
+                <p>CÉDULA PROFESIONAL: {{ acta.vocal.cedula }}</p>
+            </div>
+            <div class="firma-single">
+                <p>DIRECTOR (A)</p>
+                <p>{{ director.nombre_completo }}</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

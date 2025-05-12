@@ -470,9 +470,13 @@ class Titulacion(models.Model):
             storage.delete(path)
         super().delete(*args, **kwargs)
     
-    
 class Profesor (models.Model):
-    sigla = models.CharField(max_length=10, default="")
+    sigla = models.CharField(max_length=50, choices=[
+        ('MTI.', 'Maestría en Tecnologías de la Información'),
+        ('MDIS.', 'Maestría en Diseño'),
+        ('ING.', 'Ingeniero'),
+        ('LIC.', 'Licenciado'),
+        ('DR.', 'Doctor')], default='MTI')
     nombreProfesor = models.CharField(max_length=100)
     apellidoPaterno = models.CharField(max_length=100, default="")
     apellidoMaterno = models.CharField(max_length=100, default="")
