@@ -14,14 +14,14 @@ body {
 
 }
 .portada {
-  margin-bottom: 10px; 
-  display: flex; 
-  margin-left: auto; 
-  margin-right: auto;
-  width: 00px;       /* Ajusta el ancho según prefieras */
-  height: 150px;      /* Altura más pequeña (ajusta este valor) */
-  object-fit: cover;  /* Asegura que la imagen cubra el espacio sin distorsionarse */
-  border-radius: 8px; /* Esquinas redondeadas (puedes aumentar este valor si quieres más redondez) */
+  margin-bottom: 10px;
+  display: block;
+  width: 100%;
+  height: auto; 
+  max-height: 200px; 
+  object-fit: cover; 
+  border-radius: 8px 8px 8px 8px; 
+  border: 1px solid #ddd; 
 }
 
 .container {

@@ -1,4 +1,3 @@
-<!-- templates/acta_examen_pdf.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -117,8 +116,7 @@
             Y de acuerdo a las disposiciones reglamentarias en vigor sobre la Titulación Integral, se
             procedió a efectuar el Acto de Recepción Profesional a el (la)
             C. {{ titulacion.nombre }} {{titulacion.apellido_paterno}} {{titulacion.apellido_materno}}. No. de Control
-            {{ titulacion.matricula }} egresado (a) del Instituto Tecnológico Superior de
-            Acayucan, pasante de la carrera de
+            {{ titulacion.matricula }} egresado (a) del Instituto Tecnológico Superior de Acayucan, pasante de la carrera de
             {{ titulacion.carrera }}.
         </p>
         
@@ -136,33 +134,39 @@
             el Código de Ética Profesional y le tomó la Protesta de Ley. Dándose por terminado
             el Acto a las {{ acta.hora_fin|time:"H:i" }} horas, se asentó la presente en el libro para Actas de Examen
             Profesional por Titulación Integral No. {{ acta.libro }} a las {{ acta.foja }} fojas, autorizado por la H.
-            Junta Directiva del Instituto Tecnológico Superior de Acayucan fecha 29
-            de marzo de 2022 y una vez escrita, leída y aprobada la firmaron
+            Junta Directiva del Instituto Tecnológico Superior de Acayucan fecha _____
+            de ______ de ______  y una vez escrita, leída y aprobada la firmaron
             para constancia las personas que en el acto intervinieron.
+        </p>
+
+        <p class="text-justify">
+            Para    los    usos    legales   correspondientes, se  expide  la  presente  en  la Ciudad de
+            Acayucan, Veracruz, a los _________días del mes de   abril    del año    2024   . 
+
         </p>
         
         <div class="firmas">
             <div class="firma">
                 <p>PRESIDENTE (A)</p>
-                <p>{{ acta.presidente.nombre_completo }}</p>
-                <p>CÉDULA PROFESIONAL: {{ acta.presidente.cedula }}</p>
+             
+                <p>CÉDULA PROFESIONAL:</p>
             </div>
             <div class="firma">
                 <p>SECRETARIO (A)</p>
-                <p>{{ acta.secretario.nombre_completo }}</p>
-                <p>CÉDULA PROFESIONAL: {{ acta.secretario.cedula }}</p>
+               
+                <p>CÉDULA PROFESIONAL: </p>
             </div>
         </div>
         
         <div class="firmas">
             <div class="firma">
                 <p>VOCAL</p>
-                <p>{{ acta.vocal.nombre_completo }}</p>
-                <p>CÉDULA PROFESIONAL: {{ acta.vocal.cedula }}</p>
+                
+                <p>CÉDULA PROFESIONAL: </p>
             </div>
             <div class="firma-single">
                 <p>DIRECTOR (A)</p>
-                <p>{{ director.nombre_completo }}</p>
+                <p>DR. Ricardo Ávila García</p>
             </div>
         </div>
     </div>

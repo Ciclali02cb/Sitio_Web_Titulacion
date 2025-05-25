@@ -18,13 +18,12 @@
         </form>
             <!-- Contenedor para los botones -->
             <div class="botones-superiores">
-                <a href=" " class="crear-btn">Crear Nueva Titulación</a>
+
                 <a href="{% url 'home' %}" class="regresar-btn">← Regresar</a>
             </div>
         <table class="titulacion-table">
             <thead>
                 <tr>
-                   
                     <th>Correo</th>
                     <th>Matrícula</th>
                     <th>Nombres</th>
@@ -33,14 +32,14 @@
                     <th>Carrera</th>
                     <th>Edad</th>
                     <th>Telefono</th>
-                    <th>Dialecto</th>          <!-- Nueva columna -->
+                    <th>Dialecto</th>          
                     <th>Promedio</th>
                     <th>Nombre del Proyecto</th>
                     <th>Asesor</th>
-                    <th>Nombre del Revisor 1</th>
-                    <th>Nombre del Revisor 2</th>
+                    <th>Revisor 1</th>
+                    <th>Revisor 2</th>
                     <th>Archivo</th>
-                    <th colspan="1">Opción</th>
+                    <th colspan="2">Opción</th>
                 </tr>
             </thead>
             <tbody>
@@ -57,11 +56,40 @@
                     <td>{{ titulacion.dialecto|default:"-" }}</td>
                     <td>{{ titulacion.promedio }}</td>
                     <td>{{ titulacion.nombre_del_proyecto }}</td>
-                    <td>{{ titulacion.nombre_del_asesor }}</td>
-                    <td>{{ titulacion.nombre_del_revisor_1 }}</td>
-                    <td>{{ titulacion.nombre_del_revisor_2 }}</td>
+                    <td>
+                        {% if titulacion.asesor %}
+                        {{ titulacion.asesor.sigla }} 
+                        {{ titulacion.asesor.nombreProfesor }}
+                        {{ titulacion.asesor.apellidoPaterno }} 
+                        {{ titulacion.asesor.apellidoMaterno }}
+                        {% else %}
+                        -
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if titulacion.revisor_1 %} 
+                        {{ titulacion.revisor_1.sigla }} 
+                        {{ titulacion.revisor_1.nombreProfesor }}
+                        {{ titulacion.revisor_1.apellidoPaterno }} 
+                        {{ titulacion.revisor_1.apellidoMaterno }}
+                        {% else %}
+                        -
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if titulacion.revisor_2 %}
+                        {{ titulacion.revisor_2.sigla }} 
+                        {{ titulacion.revisor_2.nombreProfesor }} 
+                        {{ titulacion.revisor_2.apellidoPaterno }}
+                        {{ titulacion.revisor_2.apellidoMaterno }}
+                        {% else %}
+                        -
+                        {% endif %}
+                    </td>
                     <td><a href="{{ titulacion.archivo.url }}">Descargar</a></td>
                     <td><a href="{% url 'delete_titulacion' titulacion.pk %}">Eliminar</a></td>
+                    <td><a href="{% url 'acta_Alumno' titulacion.pk %}">Acta</a></td>
+                   
                 </tr>
                 {% empty %}
                 <tr>

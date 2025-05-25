@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +7,6 @@
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
 </head>
-
 <body>
     <div class="container_list">
         <h1>Profesores</h1>
@@ -17,7 +15,7 @@
             <button type="submit" class="buscar-btn">Buscar</button>
         </form>
         <a href="{% url 'agregar_profesor' %}" class="crear-btn">Agregar Nuevo Profesor</a>
-        <a href="{% url 'home' %}" class="btn-regresar">← Regresar</a>
+        <a href="{% url 'home' %}" class="regresar-btn">← Regresar</a>
         <table>
             <thead>
                 <tr>

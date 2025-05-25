@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">  
 <head>
-    
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Titulacion </title>
@@ -11,7 +10,6 @@
 
 <body>
     <div class="container">
-        {% load static %}
         <img src="{% static 'IMG/portada1.png' %}" alt="Portada de titulación" class="portada">
 
         <h1>Tramite de Titulación Integral</h1>
@@ -20,8 +18,6 @@
             {% csrf_token %}
             {{ form.as_p }}
             <input type="submit" value="Enviar">
-            
-            
         </form>
     </div>
 </body>

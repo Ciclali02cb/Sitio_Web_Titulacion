@@ -9,8 +9,8 @@ class TitulacionForm(forms.ModelForm):
         fields = ['correo','matricula','nombre','apellido_paterno','apellido_materno',
                   'carrera','edad', 'telefono', 'dialecto','promedio',
                   'nombre_del_proyecto','archivo',
-                  'opcion_de_titulacion', 'nombre_del_asesor','nombre_del_revisor_1',
-                  'nombre_del_revisor_2','lugar','discapacidad', 'genero','modalidad', 
+                  'opcion_de_titulacion', 'asesor','revisor_1',
+                  'revisor_2','lugar','discapacidad', 'genero','modalidad', 
                   
                   
                    
@@ -29,14 +29,28 @@ class TitulacionForm(forms.ModelForm):
             'nombre_del_proyecto': 'NOMBRE DEL PROYECTO (Debe respetar el uso de minúsculas y mayúsculas según corresponda)',
             'archivo': 'Adjunta tu proyecto final en formato PDF (el archivo debe pesar máximo 10mb)',
             'opcion_de_titulacion': 'Opción de Titulación',
-            'nombre_del_asesor': 'Nombre del Asesor',
-            'nombre_del_revisor_1': 'Nombre del Revisor 1',
-            'nombre_del_revisor_2': 'Nombre del Revisor 2',
+            'asesor': 'Nombre del Asesor',
+            'revisor_1': 'Nombre del Revisor 1',
+            'revisor_2': 'Nombre del Revisor 2',
             'lugar': 'Ciudad',
             'discapacidad': '¿Tiene alguna discapacidad?',
             'genero': 'Género',
             'modalidad': 'Modalidad',
         }
+        
+        
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Personalizar cómo se muestran los campos de selección de profesores
+        self.fields['asesor'].queryset = Profesor.objects.all().order_by('apellidoPaterno')
+        self.fields['revisor_1'].queryset = Profesor.objects.all().order_by('apellidoPaterno')
+        self.fields['revisor_2'].queryset = Profesor.objects.all().order_by('apellidoPaterno')
+        
+        # Opcional: cambiar el widget para mostrar mejor los profesores
+        self.fields['asesor'].label_from_instance = lambda obj: f"{obj.sigla} {obj.nombreProfesor} {obj.apellidoPaterno} {obj.apellidoMaterno}"
+        self.fields['revisor_1'].label_from_instance = lambda obj: f"{obj.sigla} {obj.nombreProfesor} {obj.apellidoPaterno} {obj.apellidoMaterno}"
+        self.fields['revisor_2'].label_from_instance = lambda obj: f"{obj.sigla} {obj.nombreProfesor} {obj.apellidoPaterno} {obj.apellidoMaterno}"
+
 
 class ProfesorForm(forms.ModelForm):
     class Meta:

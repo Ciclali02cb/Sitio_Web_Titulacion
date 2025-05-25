@@ -26,7 +26,6 @@ def titulacion_list(request):
     }
     return render(request, 'titulaciones/titulacion_list.html', context)
 
-
 def update_titulacion(request, pk):
     titulacion = get_object_or_404(Titulacion, pk=pk)
     if request.method == 'POST':
@@ -115,3 +114,11 @@ def delete_profesor(request, pk):
         profesor.delete()
         return redirect('lista_profesores')
     return render(request, 'titulaciones/confirm_delete_profesor.html', {'profesor': profesor})
+
+def acta_Alumno(request, pk):
+    titulacion = get_object_or_404(Titulacion, pk=pk)
+    context = {
+        'titulacion': titulacion,
+        # Puedes agregar más contexto si lo necesitas
+    }
+    return render(request, 'titulaciones/Acta_alumno.html', context)
