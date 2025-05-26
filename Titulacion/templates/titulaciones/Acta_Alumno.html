@@ -8,9 +8,22 @@
             line-height: 1.5;
             background-color: #f5f5f5;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
             padding: 20px 0;
+            margin: 0;
         }
+        /* Contenedor beige para el encabezado */
+        .header-container {
+            width: 21.59cm;
+            background-color: #f5f5dc; /* Color beige */
+            padding: 1.5cm;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 5px;
+        }
+        
+        /* Contenedor blanco para el acta (hoja de Word) */
         .page-container {
             width: 21.59cm;
             min-height: 27.94cm;
@@ -19,29 +32,35 @@
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
             margin: 0 auto;
         }
+        
         .header {
             text-align: center;
             margin-bottom: 20px;
         }
+        
         .title {
             font-size: 16px;
             font-weight: bold;
             margin-bottom: 30px;
             text-decoration: underline;
         }
+        
         .text-justify {
             text-align: justify;
             margin-bottom: 15px;
         }
+        
         .text-center {
             text-align: center;
         }
+        
         .firmas {
             margin-top: 50px;
             display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
         }
+        
         .firma {
             text-align: center;
             width: 48%;
@@ -50,6 +69,7 @@
             padding: 0 5px;
             box-sizing: border-box;
         }
+        
         .firma-single {
             width: 100%;
             text-align: center;
@@ -58,11 +78,13 @@
             padding: 0 5px;
             box-sizing: border-box;
         }
+        
         .foto-container {
             float: right;
             margin: 0 0 15px 15px;
             width: 120px;
         }
+        
         .foto-ovalada {
             width: 100%;
             height: auto;
@@ -70,25 +92,108 @@
             border: 2px solid #000;
             object-fit: cover;
         }
+        
         .clearfix {
             clear: both;
         }
+        
         @media print {
             body {
                 background-color: transparent;
                 padding: 0;
             }
+            
+            .header-container {
+                display: none;
+            }
+            
             .page-container {
                 box-shadow: none;
                 padding: 1.5cm;
                 width: auto;
                 height: auto;
+                margin: 0;
             }
+        }
+        
+        /* Estilos para el encabezado beige */
+        .separator {
+            width: 100%;
+            height: 2px;
+            background-color: #d4c9a8;
+            margin: 15px 0;
+        }
+        
+        .document-title-container {
+            text-align: center;
+            margin: 10px 0;
+        }
+        
+        .document-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+        
+        .btn-back {
+            background-color: #6c757d;
+            color: white;
+        }
+        
+        .btn-back:hover {
+            background-color: #5a6268;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .btn-pdf {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .btn-pdf:hover {
+            background-color: #c82333;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
     </style>
 </head>
 <body>
+    <!-- Contenedor beige para el encabezado -->
+    <div class="header-container">     
+        <!-- Título centrado con espacio -->
+        <div class="document-title-container">
+            <div class="document-title">ACTA DE TITULACIÓN</div>
+        </div>
+        
+        <!-- Botones centrados con espacio -->
+        <div class="action-buttons">
+            <button class="btn btn-back" onclick="window.history.back()">Regresar</button>
+            <button class="btn btn-pdf" onclick="generatePDF()">Generar PDF</button>
+        </div>
+    </div>
+    
+    <!-- Contenedor blanco para el acta (hoja de Word) -->
     <div class="page-container">
+        <!-- Contenido del acta -->
         <div class="header">
             <p>GOBIERNO DEL ESTADO DE VERACRUZ DE IGNACIO DE LA LLAVE</p>
             <p>INSTITUTO TECNOLÓGICO SUPERIOR DE ACAYUCAN</p>
@@ -105,10 +210,38 @@
             {{ acta.hora_inicio|time:"H:i" }} horas, se reunieron en La Sala de Titulación, 
             Virtual del Instituto Tecnológico Superior de Acayucan, clave 30EIT0010B, los integrantes del Jurado.
         </p>
-        
-        <p class="text-justify">Presidente (a): {{ titulacion.nombre_del_asesor }}</p>
-        <p class="text-justify">Secretario (a): {{ titulacion.nombre_del_revisor_1 }}</p>
-        <p class="text-justify">Vocal: {{ titulacion.nombre_del_revisor_2 }}</p>
+<p class="text-justify">Presidente (a): 
+    {% if titulacion.asesor %}
+        {{ titulacion.asesor.sigla }} 
+        {{ titulacion.asesor.nombreProfesor }}
+        {{ titulacion.asesor.apellidoPaterno }} 
+        {{ titulacion.asesor.apellidoMaterno }}
+    {% else %}
+        -
+    {% endif %}
+</p>
+
+<p class="text-justify">Secretario (a): 
+    {% if titulacion.revisor_1 %}
+        {{ titulacion.revisor_1.sigla }} 
+        {{ titulacion.revisor_1.nombreProfesor }}
+        {{ titulacion.revisor_1.apellidoPaterno }} 
+        {{ titulacion.revisor_1.apellidoMaterno }}
+    {% else %}
+        -
+    {% endif %}
+</p>
+
+<p class="text-justify">Vocal: 
+    {% if titulacion.revisor_2 %}
+        {{ titulacion.revisor_2.sigla }} 
+        {{ titulacion.revisor_2.nombreProfesor }}
+        {{ titulacion.revisor_2.apellidoPaterno }} 
+        {{ titulacion.revisor_2.apellidoMaterno }}
+    {% else %}
+        -
+    {% endif %}
+</p>
         
         <div class="clearfix"></div>
         
@@ -142,33 +275,77 @@
         <p class="text-justify">
             Para    los    usos    legales   correspondientes, se  expide  la  presente  en  la Ciudad de
             Acayucan, Veracruz, a los _________días del mes de   abril    del año    2024   . 
-
         </p>
         
         <div class="firmas">
-            <div class="firma">
-                <p>PRESIDENTE (A)</p>
-             
-                <p>CÉDULA PROFESIONAL:</p>
-            </div>
-            <div class="firma">
-                <p>SECRETARIO (A)</p>
-               
-                <p>CÉDULA PROFESIONAL: </p>
-            </div>
-        </div>
-        
-        <div class="firmas">
-            <div class="firma">
-                <p>VOCAL</p>
-                
-                <p>CÉDULA PROFESIONAL: </p>
-            </div>
-            <div class="firma-single">
-                <p>DIRECTOR (A)</p>
-                <p>DR. Ricardo Ávila García</p>
-            </div>
-        </div>
+    <div class="firma">
+        <p>PRESIDENTE (A)</p>
+        <p>
+            {% if titulacion.asesor %}
+                {{ titulacion.asesor.sigla }} 
+                {{ titulacion.asesor.nombreProfesor }}
+                {{ titulacion.asesor.apellidoPaterno }} 
+                {{ titulacion.asesor.apellidoMaterno }}
+            {% else %}
+                -
+            {% endif %}
+        </p>
+        <p>CÉDULA PROFESIONAL: 
+            {% if titulacion.asesor.cedulaProfesor %}
+                {{ titulacion.asesor.cedulaProfesor }}
+            {% else %}
+                -
+            {% endif %}
+        </p>
+    </div>
+    <div class="firma">
+        <p>SECRETARIO (A)</p>
+        <p>
+            {% if titulacion.revisor_1 %}
+                {{ titulacion.revisor_1.sigla }} 
+                {{ titulacion.revisor_1.nombreProfesor }}
+                {{ titulacion.revisor_1.apellidoPaterno }} 
+                {{ titulacion.revisor_1.apellidoMaterno }}
+            {% else %}
+                -
+            {% endif %}
+        </p>
+        <p>CÉDULA PROFESIONAL: 
+            {% if titulacion.revisor_1.cedulaProfesor %}
+                {{ titulacion.revisor_1.cedulaProfesor }}
+            {% else %}
+                -
+            {% endif %}
+        </p>
+    </div>
+</div>
+
+<div class="firmas">
+    <div class="firma">
+        <p>VOCAL</p>
+        <p>
+            {% if titulacion.revisor_2 %}
+                {{ titulacion.revisor_2.sigla }} 
+                {{ titulacion.revisor_2.nombreProfesor }}
+                {{ titulacion.revisor_2.apellidoPaterno }} 
+                {{ titulacion.revisor_2.apellidoMaterno }}
+            {% else %}
+                -
+            {% endif %}
+        </p>
+        <p>CÉDULA PROFESIONAL: 
+            {% if titulacion.revisor_2.cedulaProfesor %}
+                {{ titulacion.revisor_2.cedulaProfesor }}
+            {% else %}
+                -
+            {% endif %}
+        </p>
+    </div>
+    <div class="firma-single">
+        <p>DIRECTOR (A)</p>
+        <p>DR. Ricardo Ávila García</p>
+    </div>
+</div>
     </div>
 </body>
 </html>
