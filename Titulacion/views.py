@@ -3,6 +3,8 @@ from .models import Titulacion
 from .forms import TitulacionForm
 from .models import Profesor
 from .forms import ProfesorForm
+from .models import Acta
+from .forms import ActaForm
 from django.db.models import Q
 
 def home_view(request):
@@ -119,6 +121,24 @@ def acta_Alumno(request, pk):
     titulacion = get_object_or_404(Titulacion, pk=pk)
     context = {
         'titulacion': titulacion,
-        # Puedes agregar más contexto si lo necesitas
+        
     }
     return render(request, 'titulaciones/Acta_alumno.html', context)
+
+def acta_alumno_view(request, id):
+    acta = get_object_or_404(Acta, id=id)
+    titulacion = acta.titulacion  # Asegúrate de que esta relación existe
+    
+    if request.method == 'POST':
+        form = ActaForm(request.POST, instance=acta)
+        if form.is_valid():
+            form.save()
+            return redirect('titulacion_list')  # Ajusta esto según tu necesidad
+    else:
+        form = ActaForm(instance=acta)
+    
+    return render(request, 'Acta_alumno.html', {
+        'form': form,
+        'acta': acta,
+        'titulacion': titulacion  # Pasar el objeto titulación al template
+    })

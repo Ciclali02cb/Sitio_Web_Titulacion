@@ -1,6 +1,7 @@
 from django import forms
 from .models import Titulacion
 from .models import Profesor
+from .models import Acta
 
 
 class TitulacionForm(forms.ModelForm):
@@ -62,4 +63,30 @@ class ProfesorForm(forms.ModelForm):
             'apellidoPaterno': 'Apellido Paterno',
             'apellidoMaterno': 'Apellido Materno',
             'cedulaProfesor': 'Cédula',
+        }
+
+class ActaForm(forms.ModelForm):
+    class Meta:
+        model = Acta
+        fields = '__all__'
+        widgets = {
+            'hora_inicio': forms.TimeInput(attrs={'type': 'time'}),
+            'hora_fin': forms.TimeInput(attrs={'type': 'time'}),
+            'dia': forms.NumberInput(attrs={'min': 1, 'max': 31}),
+            'anio': forms.NumberInput(attrs={'min': 2000, 'max': 2100}),
+            'dia_firma': forms.NumberInput(attrs={'min': 1, 'max': 31}),
+            'anio_firma': forms.NumberInput(attrs={'min': 2000, 'max': 2100}),
+            'resultado': forms.Select(choices=[('Aprobado', 'Aprobado'), ('No Aprobado', 'No Aprobado')]),
+            'mes': forms.Select(choices=[
+                ('enero', 'Enero'), ('febrero', 'Febrero'), ('marzo', 'Marzo'),
+                ('abril', 'Abril'), ('mayo', 'Mayo'), ('junio', 'Junio'),
+                ('julio', 'Julio'), ('agosto', 'Agosto'), ('septiembre', 'Septiembre'),
+                ('octubre', 'Octubre'), ('noviembre', 'Noviembre'), ('diciembre', 'Diciembre')
+            ]),
+            'mes_firma': forms.Select(choices=[
+                ('enero', 'Enero'), ('febrero', 'Febrero'), ('marzo', 'Marzo'),
+                ('abril', 'Abril'), ('mayo', 'Mayo'), ('junio', 'Junio'),
+                ('julio', 'Julio'), ('agosto', 'Agosto'), ('septiembre', 'Septiembre'),
+                ('octubre', 'Octubre'), ('noviembre', 'Noviembre'), ('diciembre', 'Diciembre')
+            ]),
         }

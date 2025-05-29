@@ -1,5 +1,6 @@
 from django.db import models 
 
+
 class Profesor (models.Model):
     sigla = models.CharField(max_length=50, choices=[
         ('MTI.', 'Maestría en Tecnologías de la Información'),
@@ -112,7 +113,17 @@ class Titulacion(models.Model):
         
     def __str__(self):
         return f"{self.correo} {self.matricula}{self.nombre} {self.carrera} {self.apellido_paterno} {self.nombre_del_proyecto} {self.apellido_materno}  {self.edad} {self.promedio} {self.opcion_de_titulacion} {self.asesor}{self.revisor_1}{self.revisor_2} {self.discapacidad} {self.genero} {self.modalidad} {self.dialecto} {self.telefono}"
-    #Eliminar archivo
+    
+class Acta(models.Model):
+    libro = models.CharField(max_length=50, blank=True, null=True)
+    foja = models.CharField(max_length=50, blank=True, null=True)   
+    dia_firma = models.CharField(max_length=2, blank=True, null=True)  
+    mes_firma = models.CharField(max_length=15, blank=True, null=True)  
+    anio_firma = models.CharField(max_length=4, blank=True, null=True)   
+    
+    def __str__(self):
+        return f"Acta {self.libro}{self.foja}{self.dia_firma}{self.mes_firma}{self.anio_firma}"
+
     def delete(self, *args, **kwargs):
         # Elimina el archivo cuando se borra el objeto
         if self.archivo:
