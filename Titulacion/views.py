@@ -1,4 +1,7 @@
 from django.shortcuts import render, redirect , get_object_or_404
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from .models import Titulacion
 from .forms import TitulacionForm
 from .models import Profesor
@@ -7,8 +10,30 @@ from .models import Acta
 from .forms import ActaForm
 from django.db.models import Q
 
+from django.http import JsonResponse
+from django.contrib.auth import authenticate, login
+
+def custom_login(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        
+        user = authenticate(request, username=username, password=password)
+        
+        if user is not None:
+            login(request, user)
+            return JsonResponse({'success': True})
+        
+        return JsonResponse({
+            'success': False,
+            'error': 'Usuario o contraseña incorrectos'
+        }, status=400)
+    
+    return JsonResponse({'error': 'Método no permitido'}, status=405)
+
 def home_view(request):
     return render(request, 'titulaciones/index.html')
+@login_required
 def titulacion_list(request):
     query = request.GET.get('q', '')
     
@@ -27,7 +52,7 @@ def titulacion_list(request):
         'query': query
     }
     return render(request, 'titulaciones/titulacion_list.html', context)
-
+@login_required
 def update_titulacion(request, pk):
     titulacion = get_object_or_404(Titulacion, pk=pk)
     if request.method == 'POST':
@@ -46,7 +71,7 @@ def update_titulacion(request, pk):
         'form': form,
         'titulacion': titulacion
     })
-    
+@login_required    
 def delete_titulacion(request, pk):
     titulacion = get_object_or_404(Titulacion, pk=pk)
     if request.method == 'POST':
@@ -72,6 +97,7 @@ def create_titulacion(request):
 
 #PROFESORES EN EL ITSA
 # Vista para listar profesores
+@login_required
 def lista_profesores(request):
     query = request.GET.get('query', '')
     
@@ -89,6 +115,7 @@ def lista_profesores(request):
     return render(request, 'titulaciones/profesor_list.html', context)
 
 # Vista para agregar un nuevo profesor
+@login_required
 def agregar_profesor(request):
     if request.method == 'POST':
         form = ProfesorForm(request.POST)
@@ -99,6 +126,7 @@ def agregar_profesor(request):
         form = ProfesorForm()
     return render(request, 'titulaciones/profesor_form.html', {'form': form})
 
+@login_required
 def update_profesor(request, pk):
     profesor = get_object_or_404(Profesor, pk=pk)
     if request.method == 'POST':
@@ -109,7 +137,7 @@ def update_profesor(request, pk):
     else:
         form = ProfesorForm(instance=profesor)
     return render(request, 'titulaciones/profesor_form.html', {'form': form})
-
+@login_required
 def delete_profesor(request, pk):
     profesor = get_object_or_404(Profesor, pk=pk)
     if request.method == 'POST':

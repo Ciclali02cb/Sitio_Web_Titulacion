@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal de Titulación - ITSA</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         /* Estilos generales */
         body {
@@ -144,6 +145,32 @@
         .redirect-btn:nth-child(odd):hover {
             background-color: #0080FF; 
         }
+        /* Estilos para el modal personalizado */
+        .modal-custom {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content-custom {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 350px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .close-modal {
+            float: right;
+            cursor: pointer;
+            font-size: 24px;
+        }
         
         /* Responsive */
         @media (max-width: 768px) {
@@ -173,6 +200,15 @@
             .header-title {
                 font-size: 24px;
             }
+            .redirect-btn[type="submit"] {
+            background-color: #4DA6FF;
+            color: white;
+            padding: 14px 24px;
+            border-radius: 6px;
+            font-size: 16px;
+            min-width: 220px;
+            text-align: center;
+}
         }
     </style>
 </head>
@@ -201,21 +237,119 @@
                 <!-- Formulario de Titulación -->
                 <a href="{% url 'titulacion_new' %}" class="redirect-btn">Formulario de Titulación</a>
                 
+                {% if user.is_authenticated %}
                 <!-- Lista de Estudiantes -->
                 <a href="{% url 'titulacion_list' %}" class="redirect-btn">Lista de Estudiantes</a>
                 
                 <!-- Lista de Profesores -->
                 <a href="{% url 'lista_profesores' %}" class="redirect-btn">Profesores</a>
-                
-                <!-- Inicio de sesión (debes crear esta vista) -->
-                <a href="#" class="redirect-btn">Inicio de sesión</a>
+
+                <!-- Formulario para cerrar sesión -->
+                 <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="redirect-btn">Cerrar Sesión</button>
+                </form>
+                {% else %}
+                <!-- Botón de acceso administrativo (solo para no autenticados) -->
+                 <button onclick="openLoginModal()" class="redirect-btn">Acceso Administrativo</button>
+                 {% endif %}
             </div>
         </div>
     </div>
+     <!-- Modal de Login -->
+<div id="loginModal" class="modal-custom">
+    <div class="modal-content-custom">
+        <span class="close-modal" onclick="closeLoginModal()">&times;</span>
+        <h3 style="text-align: center; margin-bottom: 20px;">Inicio de Sesión</h3>
+        
+        <!-- Asegúrate que el formulario tenga ESTA estructura -->
+        <form id="loginForm" method="post" action="{% url 'login' %}">
+            {% csrf_token %}  <!-- Esto es CRUCIAL -->
+            <div id="loginErrorContainer"></div>  <!-- Contenedor para errores -->
+            
+            <div class="mb-3">
+                <label for="username" class="form-label">Usuario:</label>
+                <input type="text" class="form-control" id="username" name="username" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Contraseña:</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <div style="text-align: center;">
+                <button type="submit" class="redirect-btn" style="width: 100%;">Ingresar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+    <!-- Tus scripts y footer actuales... -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Funciones para manejar el modal
+        function openLoginModal() {
+            document.getElementById('loginModal').style.display = 'block';
+        }
+        
+        function closeLoginModal() {
+            document.getElementById('loginModal').style.display = 'none';
+        }
+        
+        // Cerrar modal al hacer clic fuera del contenido
+        window.onclick = function(event) {
+            const modal = document.getElementById('loginModal');
+            if (event.target == modal) {
+                closeLoginModal();
+            }
+        }
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const form = this;
+    const submitButton = form.querySelector('button[type="submit"]');
+    const errorContainer = document.getElementById('loginErrorContainer');
+    
+    // Limpiar errores anteriores
+    errorContainer.innerHTML = '';
+    
+    // Mostrar estado de carga
+    submitButton.disabled = true;
+    submitButton.innerHTML = 'Validando...';
+    
+    try {
+        const response = await fetch(form.action, {
+            method: 'POST',
+            body: new FormData(form),
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+            }
+        });
+        
+        const data = await response.json();
+        
+        if (!response.ok) throw data;
+        
+        if (data.success) {
+            window.location.reload();  // Recarga la página tras login exitoso
+        }
+    } catch (error) {
+        // Mostrar mensaje de error
+        errorContainer.innerHTML = `
+            <div class="alert alert-danger mt-3">
+                ${error.error || 'Error al conectar con el servidor'}
+            </div>
+        `;
+    } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = 'Ingresar';
+    }
+});
+    </script>
+
     <footer>
         <div class="container">
             <p>Instituto Tecnológico Superior de Acayucan</p>
-            <p>© 2023 Todos los derechos reservados</p>
+            <p>© 2025 Todos los derechos reservados</p>
         </div>
     </footer>
 </body>

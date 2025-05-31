@@ -133,3 +133,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT= os.path.join(BASE_DIR, 'media')
+
+# Configuración de autenticación
+LOGIN_URL = '/accounts/login/'  # URL donde se redirige cuando se requiere login
+LOGIN_REDIRECT_URL = '/'       # URL a la que redirigir después de un login exitoso

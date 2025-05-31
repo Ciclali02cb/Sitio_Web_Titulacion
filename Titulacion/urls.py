@@ -1,8 +1,14 @@
 from django.urls import path
-from Titulacion import views
+from django.contrib.auth import views
+from django.contrib.auth.views import LogoutView
+from Titulacion import views 
+from .views import custom_login
+
 
 
 urlpatterns = [
+    path('accounts/login/', custom_login, name='login'),
+    path('accounts/logout/', LogoutView.as_view(next_page='/'), name='logout'),
     path('', views.home_view, name='home'),
     path('list', views.titulacion_list, name='titulacion_list'),
     path('new', views.create_titulacion, name='titulacion_new'),
