@@ -115,15 +115,53 @@ class Titulacion(models.Model):
         return f"{self.correo} {self.matricula}{self.nombre} {self.carrera} {self.apellido_paterno} {self.nombre_del_proyecto} {self.apellido_materno}  {self.edad} {self.promedio} {self.opcion_de_titulacion} {self.asesor}{self.revisor_1}{self.revisor_2} {self.discapacidad} {self.genero} {self.modalidad} {self.dialecto} {self.telefono}"
     
 class Acta(models.Model):
-    libro = models.CharField(max_length=50, blank=True, null=True)
-    foja = models.CharField(max_length=50, blank=True, null=True)   
-    dia_firma = models.CharField(max_length=2, blank=True, null=True)  
-    mes_firma = models.CharField(max_length=15, blank=True, null=True)  
-    anio_firma = models.CharField(max_length=4, blank=True, null=True)   
+    # Relación con Titulacion (OneToOne porque cada titulación tendrá un acta)
+    titulacion = models.OneToOneField(
+        Titulacion,
+        on_delete=models.CASCADE,
+        related_name='acta',
+        unique=True
+    )  
+    # Campos para la fecha del examen
+    dia_examen = models.CharField(max_length=2, default='1', blank=True, null=True)
+    mes_examen = models.CharField(max_length=20, default='enero', blank=True, null=True)
+    anio_examen = models.CharField(max_length=4, default='2025', blank=True, null=True)
     
-    def __str__(self):
-        return f"Acta {self.libro}{self.foja}{self.dia_firma}{self.mes_firma}{self.anio_firma}"
+    # Horarios
+    hora_inicio = models.CharField(max_length=5, default='12:00', blank=True, null=True)
+    hora_fin = models.CharField(max_length=5, default='13:00', blank=True, null=True)
+    
+    # Dictamen
+    dictamen = models.CharField(max_length=50, default='Aprobado', blank=True, null=True)
+    
+    # Datos del libro de actas
+    libro = models.CharField(max_length=50, default='1', blank=True, null=True)
+    foja = models.CharField(max_length=50, default='1', blank=True, null=True)
+    
+    # Fecha de firma
+    dia_firma = models.CharField(max_length=2, default='1', blank=True, null=True)
+    mes_firma = models.CharField(max_length=15, default='enero', blank=True, null=True)
+    anio_firma = models.CharField(max_length=4, default='2025', blank=True, null=True)
+    
+    # Fecha final (para "usos legales")
+    dia_firmma = models.CharField(max_length=2, default='1', blank=True, null=True)
+    mes_firma_final = models.CharField(max_length=15, default='enero', blank=True, null=True)
+    anio_firmma = models.CharField(max_length=4, default='2025', blank=True, null=True)
+    
+    # Director
+    nombre_director = models.CharField(
+        max_length=100, 
+        default='DR. Ricardo Ávila García.',
+        blank=True,
+        null=True
+    )
+    class Meta:
+        verbose_name = 'Acta de Titulación'
+        verbose_name_plural = 'Actas de Titulación'
 
+    def __str__(self):
+        return f"Acta de {self.titulacion.nombre}"
+    
     def delete(self, *args, **kwargs):
         # Elimina el archivo cuando se borra el objeto
         if self.archivo:

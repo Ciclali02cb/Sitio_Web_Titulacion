@@ -170,3 +170,95 @@ def acta_alumno_view(request, id):
         'acta': acta,
         'titulacion': titulacion  # Pasar el objeto titulación al template
     })
+    
+@login_required
+def guardar_acta(request, pk):
+    titulacion = get_object_or_404(Titulacion, pk=pk)
+    
+    if request.method == 'POST':
+        # Verificar si ya existe un acta para esta titulación
+        try:
+            acta = Acta.objects.get(titulacion=titulacion)
+            # Si existe, actualizamos sus campos
+            acta.dia_examen = request.POST.get('dia_examen', '1')
+            acta.mes_examen = request.POST.get('mes_examen', 'enero')
+            acta.anio_examen = request.POST.get('anio_examen', '2025')
+            acta.hora_inicio = request.POST.get('hora_inicio', '12:00')
+            acta.dictamen = request.POST.get('dictamen', 'Aprobado')
+            acta.hora_fin = request.POST.get('hora_fin', '13:00')
+            acta.libro = request.POST.get('libro', '1')
+            acta.foja = request.POST.get('foja', '1')
+            acta.dia_firma = request.POST.get('dia_firma', '1')
+            acta.mes_firma = request.POST.get('mes_firma', 'enero')
+            acta.anio_firma = request.POST.get('anio_firma', '2025')
+            acta.dia_firmma = request.POST.get('dia_firmma', '1')
+            acta.mes_firma_final = request.POST.get('mes_firma_final', 'enero')
+            acta.anio_firmma = request.POST.get('anio_firmma', '2025')
+            acta.nombre_director = request.POST.get('nombre_director', 'DR. Ricardo Ávila García.')
+            acta.save()
+        except Acta.DoesNotExist:
+            # Si no existe, creamos una nueva
+            Acta.objects.create(
+                titulacion=titulacion,
+                dia_examen=request.POST.get('dia_examen', '1'),
+                mes_examen=request.POST.get('mes_examen', 'enero'),
+                anio_examen=request.POST.get('anio_examen', '2025'),
+                hora_inicio=request.POST.get('hora_inicio', '12:00'),
+                dictamen=request.POST.get('dictamen', 'Aprobado'),
+                hora_fin=request.POST.get('hora_fin', '13:00'),
+                libro=request.POST.get('libro', '1'),
+                foja=request.POST.get('foja', '1'),
+                dia_firma=request.POST.get('dia_firma', '1'),
+                mes_firma=request.POST.get('mes_firma', 'enero'),
+                anio_firma=request.POST.get('anio_firma', '2025'),
+                dia_firmma=request.POST.get('dia_firmma', '1'),
+                mes_firma_final=request.POST.get('mes_firma_final', 'enero'),
+                anio_firmma=request.POST.get('anio_firmma', '2025'),
+                nombre_director=request.POST.get('nombre_director', 'DR. Ricardo Ávila García.')
+            )
+        return redirect('titulacion_list')
+    
+    # Para solicitudes GET
+    try:
+        acta = Acta.objects.get(titulacion=titulacion)
+        form_data = {
+            'dia_examen': acta.dia_examen,
+            'mes_examen': acta.mes_examen,
+            'anio_examen': acta.anio_examen,
+            'hora_inicio': acta.hora_inicio,
+            'dictamen': acta.dictamen,
+            'hora_fin': acta.hora_fin,
+            'libro': acta.libro,
+            'foja': acta.foja,
+            'dia_firma': acta.dia_firma,
+            'mes_firma': acta.mes_firma,
+            'anio_firma': acta.anio_firma,
+            'dia_firmma': acta.dia_firmma,
+            'mes_firma_final': acta.mes_firma_final,
+            'anio_firmma': acta.anio_firmma,
+            'nombre_director': acta.nombre_director
+        }
+    except Acta.DoesNotExist:
+        form_data = {
+            'dia_examen': '1',
+            'mes_examen': 'enero',
+            'anio_examen': '2025',
+            'hora_inicio': '12:00',
+            'dictamen': 'Aprobado',
+            'hora_fin': '13:00',
+            'libro': '1',
+            'foja': '1',
+            'dia_firma': '1',
+            'mes_firma': 'enero',
+            'anio_firma': '2025',
+            'dia_firmma': '1',
+            'mes_firma_final': 'enero',
+            'anio_firmma': '2025',
+            'nombre_director': 'DR. Ricardo Ávila García'
+        }
+    
+    context = {
+        'titulacion': titulacion,
+        'form': form_data
+    }
+    return render(request, 'titulaciones/Acta_alumno.html', context)

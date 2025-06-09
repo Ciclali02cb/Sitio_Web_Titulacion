@@ -26,7 +26,7 @@
             width: 21.6cm;
             min-height: 27.9cm;
             margin: 0 auto;
-            padding: 2.5cm 2cm 2cm 3cm; /* Margen izquierdo 3cm */
+            padding: 2.2cm 2cm 2cm 3.5cm; 
             background-color: white;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
             position: relative;
@@ -43,14 +43,14 @@
             text-align: center;
         }
         .document {
-        font-family: Arial, sans-serif; /* Fuente Arial */
-        font-size: 30px;               /* Más grande (antes 24px) */
-        font-weight: 900;              /* Negrita extragruesa (700=normal bold, 900=máximo) */
-        color: #333;                   /* Color oscuro */
-        margin-bottom: 20px;           /* Espaciado inferior */
-        text-align: center;            /* Centrado */
-        text-transform: uppercase;     /* Opcional: mayúsculas */
-        letter-spacing: 1px;           /* Opcional: espacio entre letras */
+            font-family: Arial, sans-serif; 
+            font-size: 30px;               
+            font-weight: 900;              
+            color: #333;                 
+            margin-bottom: 20px;         
+            text-align: center;           
+            text-transform: uppercase;     
+            letter-spacing: 1.2px;           
         }
         
         .title {
@@ -64,14 +64,19 @@
         /* Estilos para los párrafos */
         .text-justify {
             text-align: justify;
-            margin-bottom: 15px;
+            margin-bottom: 17px;
             font-size: 9.5pt;
-            margin-left: 2.5cm;    /* Margen izquierdo de 3.5 cm */
-            margin-right: 3cm;   /* Margen derecho de 5.5 cm */
+            margin-left: 1.9cm;   
+            margin-right: 1.3cm;  
             text-indent: 0;
-            width: auto;          /* El ancho se ajustará automáticamente */
+            width: auto;  
+            line-height: 1.4; /* Reducir espacio entre líneas */
+            margin-top: 0; /* Eliminar márgenes superiores */
+            margin-bottom: 0; /* Eliminar márgenes inferiores */
+            padding: 0; /* Eliminar padding */        
         }
-        
+       
+               
         .text-center {
             text-align: center;
             font-size: 9.5pt;
@@ -80,10 +85,10 @@
         /* Estilos para las imágenes */
         .oval-photo {
             position: absolute;
-            left: 1.5cm;
-            top: 8.3cm;
-            width: 3cm;
-            height: 5.3cm;
+            left: 1.3cm;
+            top: 9.5cm; /* 0.2cm más abajo */
+            width: 3.2cm;
+            height: 4.9cm; /* 0.5cm más larga */
             border-radius: 50%;
             border: 1px solid #000;
             object-fit: cover;
@@ -91,11 +96,12 @@
         
         .right-image {
             position: absolute;
-            right: 2cm;
-            top: 2.5cm;
-            width: 1.73cm;
-            height: 3.46cm;
-            object-fit: cover;
+            right: 2.3cm;
+            top: 2cm;
+            width: 1.7cm;      /* Ancho deseado */
+            height: 4.5cm;     /* Alto deseado */
+            object-fit: contain; /* Escala proporcionalmente sin deformar */
+            background-color: transparent !important; /* Fuerza transparencia */
         }
         
         /* Estilos para las firmas */
@@ -105,7 +111,7 @@
         
         .president {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
         
         .secretary-vocal {
@@ -123,11 +129,23 @@
         
         .director {
             text-align: center;
-            margin-top: 30px;
+            margin-top:30px;
         }
         
         .signature-line {
-            width: 200px;
+            width: 7.5cm;
+            border-top: 1px solid rgb(0, 0, 0);
+            margin: 0 auto;
+            padding-top: 0.5px;
+        }
+        .signature-line2 {
+            width: 6cm;
+            border-top: 1px solid rgb(0, 0, 0);
+            margin: 0 auto;
+            padding-top: 0.5px;
+        }
+        .signature-line3 {
+            width: 7cm;
             border-top: 1px solid rgb(0, 0, 0);
             margin: 0 auto;
             padding-top: 0.5px;
@@ -196,12 +214,14 @@
         
         /* Estilos para el encabezado */
         .institutional-text {
+            font-family: Arial;
             font-weight: bold; 
             text-align: center;
-            font-size: 11.5pt;
+            font-size: 11.6pt;
             margin-bottom: 5px;
-            margin: right 0.2cm; 
-            width: calc(100% - 1cm);
+            margin: right 0.1cm; 
+            width: calc(100% - 2cm);
+            line-height: 1.0;     /* Interlineado sencillo (sin espacio adicional) */   
         }
         .institutional-text2 {
             font-weight: bold;
@@ -281,29 +301,105 @@
             outline: none;
         }
         
-        /* Estilos para impresión */
-        @media print {
-            body {
-                background-color: transparent;
-                padding: 0;
-            }
-            
-            .header-container,
-            .action-buttons,
-            .btn-save,
-            form[style*="position: absolute; bottom: 20px;"] {
-            display: none !important;
-            }
-            .page-container {
-                box-shadow: none;
-                padding: 2.5cm 2cm 2cm 3cm;
-                width: auto;
-                height: auto;
-                margin: 0;
-            }
-            
-           
+        .nombre-subrayado {
+            border-bottom: 1px solid black;
+            display: inline-block; 
+            width: 400px;        
+            padding-bottom: 2px;
         }
+        .nombre-subrayado2 {
+            border-bottom: 1px solid black;
+            display: inline-block; 
+            width: 445px;        
+            padding-bottom: 2px;
+        }
+        .linea-firma {
+            border-bottom: 1px solid black;  
+            padding-bottom: 0.5px;           
+            display: inline-block;           
+            min-width: 78%;                 
+        }
+        .linea-firma1 {
+            border-bottom: 1px solid black;  
+            padding-bottom: 2px;             
+            display: inline-block;           
+            min-width: 70%;                 
+        }
+        .linea-firma2 {
+            border-bottom: 1px solid black;  
+            padding-bottom: 2px;             
+            display: inline-block;           
+            min-width: 100%;                 
+        }
+        .linea-firma3 {
+            border-bottom: 1px solid black;
+            display: inline-block;
+            padding-bottom: 1px;           /* Línea pegada al texto */
+            text-align: center;
+            min-width: 2.8cm;                  /* Ancho flexible */
+            line-height: 1;
+    
+}
+        .texto-subrayado {
+            text-decoration: underline;
+        }
+        
+        .president, 
+        .secretary, 
+        .vocal, 
+        .director {
+            margin-right: 0.2cm; /* Mover 1cm a la derecha */
+        }
+
+        /* Estilos para separar títulos de nombres en firmas */
+        .president p:first-child,
+        .secretary p:first-child,
+        .vocal p:first-child,
+        .director p:first-child {
+            margin-bottom: 0.3cm !important; /* Separa el título del nombre */
+        }
+
+        .form-container {
+            margin-top: 0.7cm;  /* Espacio superior */
+            padding-top: 0.5cm; /* Espacio interno superior */
+            position: relative;
+            height: auto;       /* Altura automática */
+            min-height: 1.5cm;    /* Altura mínima opcional */
+        }
+        
+@media print {
+    /* Oculta completamente el encabezado */
+    .header-container {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    
+    /* Asegura que el contenedor principal ocupe toda la página */
+    .page-container {
+        margin: 0 !important;
+        padding: 2.2cm 2cm 2cm 3.5cm !important;
+        width: 21.6cm !important;
+        min-height: 27.9cm !important;
+        box-shadow: none !important;
+        position: relative !important;
+    }
+    
+    /* Elimina cualquier espacio adicional */
+    body {
+        padding: 0 !important;
+        margin: 0 !important;
+        background: white !important;
+    }
+    
+    /* Mantén visibles solo los elementos necesarios */
+    .action-buttons,
+    .btn-save {
+        display: none !important;
+    }
+}
         @page{
             size: A4;
             margin: 0;
@@ -336,24 +432,25 @@
             <p class="document-title">ACTA DE EXAMEN PROFESIONAL</p>
         </div>
         
-        <form method="post" id="main-form">
+         <form method="post" id="main-form" class="form-container" action="{% url 'Acta_guardar' titulacion.id %}">
             {% csrf_token %}
             <p class="text-justify">
-                En     la     Ciudad     de    Acayucan, Ver., a      los 
-                <input type="text" name="dia_examen" class="input-text input-day" value="{{ form.dia_examen.value|default:'1' }}" maxlength="2"> días del mes de 
-                <input type="text" name="mes_examen" class="input-text input-month" value="{{ form.mes_examen.value|default:'enero' }}"> de 
-                <input type="text" name="anio_examen" class="input-text input-year" value="{{ form.anio_examen.value|default:'2023' }}" maxlength="4">, siendo las 
-                <input type="text" name="hora_inicio" class="input-text input-time" value="{{ form.hora_inicio.value|default:'12:00' }}" placeholder="HH:MM" maxlength="5"> horas, se reunieron 
-                en La Sala de Titulación de Titulacion Virtual del Instituto Tecnológico Superior de 
-                Acayucan, clave 30EIT0010B, los integrantes del Jurado.
+                En &nbsp; &nbsp;&nbsp;la &nbsp;&nbsp; &nbsp;Ciudad&nbsp;&nbsp;&nbsp;de &nbsp; &nbsp; &nbsp;<u>Acayucan</u>, Ver., a los
+                <input type="text" name="dia_examen" id="dia_examen" class="input-text input-day" value="{{ form.dia_examen.value|default:'1' }}" maxlength="2">días&nbsp; del &nbsp;mes &nbsp;de<input type="text" name="mes_examen" id="mes_examen" class="input-text input-month" value="{{ form.mes_examen.value|default:'enero' }}"> de 
+                <input type="text" name="anio_examen" id="anio_examen" class="input-text input-year" value="{{ form.anio_examen.value|default:'2025' }}" maxlength="4">, siendo las 
+                <input type="text" name="hora_inicio" id="hora_inicio" class="input-text input-time" value="{{ form.hora_inicio.value|default:'12:00' }}" placeholder="HH:MM" maxlength="5"> horas, se reunieron 
+                en <u>La Sala de Titulación Virtual</u> del Instituto Tecnológico Superior de 
+                <u>Acayucan</u>, clave <u>30EIT0010B</u>, los integrantes del Jurado.
             </p>
 
             <p class="text-justify">Presidente (a): 
                 {% if titulacion.asesor %}
+                <span class="nombre-subrayado">
                     {{ titulacion.asesor.sigla }} 
                     {{ titulacion.asesor.nombreProfesor }}
                     {{ titulacion.asesor.apellidoPaterno }} 
                     {{ titulacion.asesor.apellidoMaterno }}
+                    </span>
                 {% else %}
                     -
                 {% endif %}
@@ -362,10 +459,12 @@
 
             <p class="text-justify">Secretario (a): 
                 {% if titulacion.revisor_1 %}
+                 <span class="nombre-subrayado">
                     {{ titulacion.revisor_1.sigla }} 
                     {{ titulacion.revisor_1.nombreProfesor }}
                     {{ titulacion.revisor_1.apellidoPaterno }} 
                     {{ titulacion.revisor_1.apellidoMaterno }}
+                    </span>
                 {% else %}
                     -
                 {% endif %}
@@ -373,10 +472,12 @@
 
             <p class="text-justify">Vocal: 
                 {% if titulacion.revisor_2 %}
+                <span class="nombre-subrayado2">
                     {{ titulacion.revisor_2.sigla }} 
                     {{ titulacion.revisor_2.nombreProfesor }}
                     {{ titulacion.revisor_2.apellidoPaterno }} 
                     {{ titulacion.revisor_2.apellidoMaterno }}
+                    </span>
                 {% else %}
                     -
                 {% endif %}
@@ -384,44 +485,46 @@
             
             <p class="text-justify">
                 Y de acuerdo a las disposiciones reglamentarias en vigor sobre la Titulación Integral, se
-                procedió a efectuar el Acto de Recepción Profesional a el (la)
-                C. {{ titulacion.nombre }} {{titulacion.apellido_paterno}} {{titulacion.apellido_materno}} No. de Control
-                {{ titulacion.matricula }} egresado (a) del Instituto Tecnológico Superior de 
-                Acayucan, pasante de la carrera de
-                {{ titulacion.carrera }}.
+                procedió&nbsp;&nbsp; a&nbsp; &nbsp;efectuar&nbsp; &nbsp;el &nbsp;&nbsp;Acto&nbsp; &nbsp;de&nbsp; Recepción &nbsp;Profesional&nbsp; &nbsp;a &nbsp;&nbsp;el &nbsp;&nbsp;(la)&nbsp;&nbsp;
+            </p>              
+            <p class="text-justify"> 
+                C. <span class="linea-firma">{{ titulacion.nombre }} {{titulacion.apellido_paterno}} {{titulacion.apellido_materno}}</span>No. de Control
+                <span class="linea-firma3">{{ titulacion.matricula }}</span>  egresado &nbsp; &nbsp;&nbsp; (a)  &nbsp; &nbsp;&nbsp;del  &nbsp; &nbsp;&nbsp;Instituto &nbsp; &nbsp;&nbsp; Tecnológico &nbsp; &nbsp;&nbsp; Superior  &nbsp; &nbsp;&nbsp;de 
+                <u>Acayucan</u>,&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;pasante &nbsp; &nbsp;&nbsp;de&nbsp; &nbsp;&nbsp; la carrera de
+                <span class="linea-firma">{{ titulacion.carrera }}</span>.
             </p>
-            
+            <br> <!-- Salto de línea -->
             <p class="text-justify">
                 Tomando en cuenta los integrantes del Jurado, el contenido del Trabajo Profesional,
-                cuyo tema es: {{ titulacion.nombre_del_proyecto }}
+                cuyo tema es: <span class="linea-firma1">{{ titulacion.nombre_del_proyecto }}.</span>
+                <span class="linea-firma2"></span><br>
+                <span class="linea-firma2"></span>
+                y la réplica del mismo, dictaminó que fuera 
+                <input type="text" name="dictamen" id="dictamen" class="input-text" value="Aprobado" style="width: 6.3cm; text-align: center;">
             </p>
-        
-           <p class="text-justify">
-    y la réplica del mismo, dictaminó que fuera 
-    <input type="text" name="dictamen" class="input-text" value="Aprobado" style="width: 4cm; text-align: center;"></p>
+            <br> <!-- Salto de línea -->        
             <p class="text-justify">
                 El (la) Presidente (a) del Jurado le hizo saber al sustentante el resultado obtenido,
                 el Código de Ética Profesional y le tomó la Protesta de Ley. Dándose por terminado
-                el Acto a las <input type="text" name="hora_fin" class="input-text input-time" value="{{ form.hora_fin.value|default:'13:00' }}" placeholder="HH:MM" maxlength="5"> horas, se asentó la presente en el libro para Actas de Examen
-                Profesional por Titulación Integral No. <input type="text" name="libro" class="input-text input-number" value="{{ form.libro.value|default:'1' }}"> a las 
-                <input type="text" name="foja" class="input-text input-number" value="{{ form.foja.value|default:'1' }}"> fojas, autorizado por la H.
-                Junta Directiva del Instituto Tecnológico Superior de Acayucan fecha 
-                <input type="text" name="dia_firma" class="input-text input-day" value="{{ form.dia_firma.value|default:'1' }}" maxlength="2"> de 
-                <input type="text" name="mes_firma" class="input-text input-month" value="{{ form.mes_firma.value|default:'enero' }}"> de 
-                <input type="text" name="anio_firma" class="input-text input-year" value="{{ form.anio_firma.value|default:'2023' }}" maxlength="4">
+                el Acto a las <input type="text" name="hora_fin" id="hora_fin" class="input-text input-time" value="{{ form.hora_fin.value|default:'13:00' }}" placeholder="HH:MM" maxlength="5"> horas, se asentó la presente en el libro para Actas de Examen
+                Profesional por Titulación Integral No. <input type="text" name="libro" id="libro" class="input-text input-number" value="{{ form.libro.value|default:'1' }}"> a las 
+                <input type="text" name="foja" id="foja" class="input-text input-number" value="{{ form.foja.value|default:'1' }}"> fojas, autorizado por la H.
+                Junta Directiva del Instituto Tecnológico Superior de <u>Acayucan</u>, fecha 
+                <input type="text" name="dia_firma" id="dia_firma" class="input-text input-day" value="{{ form.dia_firma.value|default:'1' }}" maxlength="2"> de 
+                <input type="text" name="mes_firma" id="mes_firma" class="input-text input-month" value="{{ form.mes_firma.value|default:'enero' }}"> de 
+                <input type="text" name="anio_firma" id="anio_firma" class="input-text input-year" value="{{ form.anio_firma.value|default:'2025' }}" maxlength="4">
                 y una vez escrita, leída y aprobada la firmaron
                 para constancia las personas que en el acto intervinieron.
             </p>
-
+            <br> <!-- Salto de línea -->
             <p class="text-justify">
                 Para los usos legales correspondientes, se expide la presente en la Ciudad de
-                Acayucan, Veracruz, a los <input type="text" name="dia_firmma" class="input-text input-day" value="{{ form.dia_firmma.value|default:'1' }}" maxlength="2"> días del mes de 
-                <input type="text" name="mes_firma_final" class="input-text input-month" value="{{ form.mes_firma_final.value|default:'enero' }}"> del año 
-                <input type="text" name="anio_firmma" class="input-text input-year" value="{{ form.anio_firmma.value|default:'2023' }}" maxlength="4">.
+                Acayucan, Veracruz, a los <input type="text" name="dia_firmma" id="dia_firmma" class="input-text input-day" value="{{ form.dia_firmma.value|default:'1' }}" maxlength="2"> días del mes de 
+                <input type="text" name="mes_firma_final" id="mes_firma_final" class="input-text input-month" value="{{ form.mes_firma_final.value|default:'enero' }}"> del año 
+                <input type="text" name="anio_firmma" id="anio_firmma" class="input-text input-year" value="{{ form.anio_firmma.value|default:'2023' }}" maxlength="4">.
             </p>
-    </form>
-           
-        <!-- Sección de firmas -->
+        </form>
+         <!-- Sección de firmas -->
         <div class="signature-section">
             <div class="president">
                 <p>PRESIDENTE (A)</p>
@@ -458,7 +561,7 @@
                             -
                         {% endif %}
                     </p>
-                    <div class="signature-line"></div>
+                    <div class="signature-line2"></div>
                     <p>CÉDULA PROFESIONAL: 
                         {% if titulacion.revisor_1.cedulaProfesor %}
                             {{ titulacion.revisor_1.cedulaProfesor }}
@@ -480,7 +583,7 @@
                             -
                         {% endif %}
                     </p>
-                    <div class="signature-line"></div>
+                    <div class="signature-line3"></div>
                     <p>CÉDULA PROFESIONAL: 
                         {% if titulacion.revisor_2.cedulaProfesor %}
                             {{ titulacion.revisor_2.cedulaProfesor }}
@@ -493,8 +596,8 @@
             
            <div class="director">
                 <p>DIRECTOR (A)</p>
-                <p><input type="text" name="nombre_director" class="input-text" 
-                   value="{{ form.nombre_director.value|default:'DR. Ricardo Ávila García' }}" 
+                <p><input type="text" name="nombre_director" id="nombre_director" class="input-text" 
+                   value="{{ form.nombre_director.value|default:'DR. Ricardo Ávila García.' }}" 
                    style="width: 200px; text-align: center;"></p>
             </div>
         </div>
@@ -511,14 +614,78 @@
             window.print(); // Esto es solo un ejemplo
         }
         
+        // Función para guardar los datos en localStorage
+        function saveFormData() {
+            const formData = {
+                dia_examen: document.getElementById('dia_examen').value,
+                mes_examen: document.getElementById('mes_examen').value,
+                anio_examen: document.getElementById('anio_examen').value,
+                hora_inicio: document.getElementById('hora_inicio').value,
+                dictamen: document.getElementById('dictamen').value,
+                hora_fin: document.getElementById('hora_fin').value,
+                libro: document.getElementById('libro').value,
+                foja: document.getElementById('foja').value,
+                dia_firma: document.getElementById('dia_firma').value,
+                mes_firma: document.getElementById('mes_firma').value,
+                anio_firma: document.getElementById('anio_firma').value,
+                dia_firmma: document.getElementById('dia_firmma').value,
+                mes_firma_final: document.getElementById('mes_firma_final').value,
+                anio_firmma: document.getElementById('anio_firmma').value,
+                nombre_director: document.getElementById('nombre_director').value
+            };
+            
+            localStorage.setItem('actaTitulacionData', JSON.stringify(formData));
+        }
+        
+        // Función para cargar los datos guardados
+        function loadFormData() {
+            const savedData = localStorage.getItem('actaTitulacionData');
+            if (savedData) {
+                const formData = JSON.parse(savedData);
+                
+                // Asignar los valores a los campos del formulario
+                document.getElementById('dia_examen').value = formData.dia_examen || '';
+                document.getElementById('mes_examen').value = formData.mes_examen || '';
+                document.getElementById('anio_examen').value = formData.anio_examen || '';
+                document.getElementById('hora_inicio').value = formData.hora_inicio || '';
+                document.getElementById('dictamen').value = formData.dictamen || 'Aprobado';
+                document.getElementById('hora_fin').value = formData.hora_fin || '';
+                document.getElementById('libro').value = formData.libro || '';
+                document.getElementById('foja').value = formData.foja || '';
+                document.getElementById('dia_firma').value = formData.dia_firma || '';
+                document.getElementById('mes_firma').value = formData.mes_firma || '';
+                document.getElementById('anio_firma').value = formData.anio_firma || '';
+                document.getElementById('dia_firmma').value = formData.dia_firmma || '';
+                document.getElementById('mes_firma_final').value = formData.mes_firma_final || '';
+                document.getElementById('anio_firmma').value = formData.anio_firmma || '';
+                document.getElementById('nombre_director').value = formData.nombre_director || 'DR. Ricardo Ávila García';
+            }
+        }
+        
         // Manejar el envío del formulario
         document.addEventListener('DOMContentLoaded', function() {
+            // Cargar datos guardados al iniciar la página
+            loadFormData();
+            
             const saveButton = document.querySelector('.btn-save');
             const mainForm = document.getElementById('main-form');
             
+            // Guardar datos cuando se hace clic en el botón de guardar
             saveButton.addEventListener('click', function(e) {
                 e.preventDefault();
+                saveFormData();
                 mainForm.submit();
+            });
+            
+            // Guardar datos automáticamente cuando se cambia un campo
+            const inputs = document.querySelectorAll('input[type="text"]');
+            inputs.forEach(input => {
+                input.addEventListener('change', saveFormData);
+            });
+            
+            // Guardar datos cuando se cierra la pestaña o se recarga la página
+            window.addEventListener('beforeunload', function(e) {
+                saveFormData();
             });
         });
     </script>
