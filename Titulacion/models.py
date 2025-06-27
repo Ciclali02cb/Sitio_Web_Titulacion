@@ -1,5 +1,6 @@
 from django.db import models 
-
+from django.utils.safestring import mark_safe
+from django.core.validators import RegexValidator
 
 class Profesor (models.Model):
     sigla = models.CharField(max_length=50, choices=[
@@ -12,27 +13,31 @@ class Profesor (models.Model):
     apellidoPaterno = models.CharField(max_length=100, default="")
     apellidoMaterno = models.CharField(max_length=100, default="")
     cedulaProfesor = models.IntegerField()
-    
+    phone_validator = RegexValidator(regex=r'^\d{10}$',message="El número de teléfono debe contener exactamente 10 dígitos.")
+    telefono_prof = models.CharField(
+        max_length=10,
+        validators=[phone_validator],
+        blank=True, 
+        null=True,
+        help_text="Debe contener exactamente 10 dígitos"
+    )
+    email_prof = models.EmailField(blank=True, null=True)
     def __str__(self):
-        return f"{self.sigla} {self.nombreProfesor} {self.cedulaProfesor} {self.apellidoMaterno} {self.apellidoMaterno}"
+        return f"{self.sigla} {self.nombreProfesor} {self.cedulaProfesor} {self.apellidoMaterno} {self.apellidoMaterno} {self.telefono} "
 
 class Titulacion(models.Model):
     correo = models.EmailField(max_length = 254) 
-    matricula = models.CharField(max_length=8) 
-    nombre = models.CharField(max_length=100)
-    apellido_paterno = models.CharField(max_length=100, default="")
-    apellido_materno = models.CharField(max_length=100, default="")
+    matricula = models.CharField(max_length=8, unique=True) 
+    nombre = models.CharField(max_length=100, help_text=mark_safe('<span style="color: red;">Escrito en Mayúsculas</span>'))
+    apellido_paterno = models.CharField(max_length=100, default="", help_text=mark_safe('<span style="color: red;">Escrito en Mayúsculas</span>'))
+    apellido_materno = models.CharField(max_length=100, default="", help_text=mark_safe('<span style="color: red;">Escrito en Mayúsculas</span>'))
     edad = models.IntegerField(default=0)
     promedio = models.IntegerField(default=0)
-    nombre_del_proyecto = models.CharField(max_length=205, default="")
-    archivo = models.FileField(upload_to='archivo')
-    telefono = models.CharField(max_length=10, blank=True, null=True)
-    dialecto = models.CharField(
-        max_length=100,
-        blank=True,
-        null=True,
-        verbose_name="¿Cuál dialecto?"
-    )
+    nombre_del_proyecto = models.CharField(max_length=205, default="", help_text=mark_safe('<span style="color: red; ">Debe respetar el uso de minúsculas y mayúsculas según corresponda</span>'))
+    archivo = models.FileField(upload_to='archivo', help_text=mark_safe('<span style="color: red; ">Adjunta tu proyecto final en formato PDF (el archivo debe pesar máximo 10MB)</span>'))
+    phone_validator = RegexValidator(regex=r'^\d{10}$',message="El número de teléfono debe contener exactamente 10 dígitos.")
+    telefono = models.CharField(max_length=10, validators=[phone_validator], blank=True, null=True, help_text="Debe contener exactamente 10 dígitos")
+    dialecto = models.CharField(max_length=100,blank=True,null=True,verbose_name="¿Cuál dialecto?")
     carrera = models.CharField(max_length=100, choices=[
         ('INGENIERÍA BIOQUÍMICA', 'INGENIERÍA BIOQUÍMICA'),
         ('INGENIERÍA CIVIL', 'INGENIERÍA CIVIL'),
@@ -54,7 +59,7 @@ class Titulacion(models.Model):
         ('Proyecto de Innovación Tecnológica','Proyecto de Innovación Tecnológica'),
         ('Proyecto de Emprededurismo','Proyecto de Emprededurismo'),
         ('Estancia','Estancia'),
-        ('Tesis o  Tesina', 'Tesis o Tesina'),
+        ('Tesis o Tesina', 'Tesis o Tesina'),
         ('Examen General de Egreso de Licenciatura (EGEL) del Centro Nacional de Evaluación para la Educación Superior, A.C(CENEVAL)','Examen General de Egreso de Licenciatura (EGEL) del Centro Nacional de Evaluación para la Educación Superior, A.C(CENEVAL)'),
         ],default='Residencia Profesional') 
     asesor = models.ForeignKey(
@@ -107,12 +112,22 @@ class Titulacion(models.Model):
         ('Sabatino', 'Sabatino'),
         ('Dominical','Dominical'),
         ('Extensión Hueyapan', 'Extensión Hueyapan'),
-        ('Extensión Uxpanapan', 'Extensión Uxpanapan')
+        ('Extensión Uxpanapan', 'Extensión Uxpanapan'),
+        ('En Línea', 'En Linea')
         ],default='Escolarizado')
+    periodo_escolar_Inicio = models.CharField(
+    max_length=20,
+    help_text=mark_safe('<span style="color: red; ">Formato: MES/AÑO (ej. AGOSTO-2022)</span>'),
+    default="AGOSTO/2022"  
+    )
+    periodo_escolar_Final = models.CharField(
+    max_length=20,
+    help_text=mark_safe('<span style="color: red; ">Formato: MES/AÑO (ej. DICIEMBRE-2025) (100 CREDITOS ACOMULADOS) </span>'),
+    default="DICIEMBRE/2025"  
+    )
     
-        
     def __str__(self):
-        return f"{self.correo} {self.matricula}{self.nombre} {self.carrera} {self.apellido_paterno} {self.nombre_del_proyecto} {self.apellido_materno}  {self.edad} {self.promedio} {self.opcion_de_titulacion} {self.asesor}{self.revisor_1}{self.revisor_2} {self.discapacidad} {self.genero} {self.modalidad} {self.dialecto} {self.telefono}"
+        return f"{self.correo} {self.matricula}{self.nombre} {self.carrera} {self.apellido_paterno} {self.nombre_del_proyecto} {self.apellido_materno}  {self.edad} {self.promedio} {self.opcion_de_titulacion} {self.asesor}{self.revisor_1}{self.revisor_2} {self.discapacidad} {self.genero} {self.modalidad} {self.dialecto} {self.telefono} {self.periodo_escolar_Inicio} {self.periodo_escolar_Final}"
     
 class Acta(models.Model):
     # Relación con Titulacion (OneToOne porque cada titulación tendrá un acta)
@@ -168,3 +183,11 @@ class Acta(models.Model):
             storage, path = self.archivo.storage, self.archivo.path
             storage.delete(path)
         super().delete(*args, **kwargs)
+        
+class Director(models.Model):
+    sigla = models.CharField(max_length=10, default='DR.')
+    nombre = models.CharField(max_length=100)
+    apellidos = models.CharField(max_length=100)
+    
+    def __str__(self):
+        return f"{self.sigla} {self.nombre} {self.apellidos}"

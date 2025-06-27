@@ -17,7 +17,10 @@
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
-            <input type="submit" value="Enviar">
+           <div class="botones-formulario">
+        <input type="submit" value="Enviar" class="acta-btn">
+        <a href="{% url 'home' %}" class="acta-btn">Regresar</a>
+    </div>
         </form>
     </div>
 </body>

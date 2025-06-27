@@ -21,4 +21,8 @@ urlpatterns = [
     path('profesores/eliminar/<int:pk>/', views.delete_profesor, name='delete_profesor'),
     path('acta_Alumno/<int:pk>/', views.acta_Alumno, name='acta_Alumno'),
     path('guardar-acta/<int:pk>/', views.guardar_acta, name='Acta_guardar'),
+    path('acta_form/', views.acta_form_view, name='acta_form'),
+    path('acta-Alumno/<int:pk>/', views.acta_alumno_view, name='acta_Alumno'),
+    path('guardar-acta/', views.guardar_acta, name='guardar_acta'),
+    path('guardar-director/', views.guardar_director, name='guardar_director'),
 ]

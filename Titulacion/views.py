@@ -2,16 +2,20 @@ from django.shortcuts import render, redirect , get_object_or_404
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from .models import Titulacion
-from .forms import TitulacionForm
-from .models import Profesor
-from .forms import ProfesorForm
-from .models import Acta
-from .forms import ActaForm
+from .models import Titulacion, Acta, Profesor, Director
+from .forms import TitulacionForm, ProfesorForm, ActaForm
 from django.db.models import Q
-
-from django.http import JsonResponse
-from django.contrib.auth import authenticate, login
+from django.http import HttpResponse
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter
+from io import BytesIO
+from reportlab.lib.units import inch
+from django.views.decorators.csrf import csrf_exempt
+from reportlab.lib.units import cm
+import os
+from django.conf import settings
+from reportlab.lib.colors import Color, black
+import json
 
 def custom_login(request):
     if request.method == 'POST':
@@ -146,119 +150,144 @@ def delete_profesor(request, pk):
     return render(request, 'titulaciones/confirm_delete_profesor.html', {'profesor': profesor})
 
 def acta_Alumno(request, pk):
-    titulacion = get_object_or_404(Titulacion, pk=pk)
+    alumno = get_object_or_404(Titulacion, pk=pk)
+    acta = alumno.acta  # Esto funciona por la relación OneToOne
+    
     context = {
-        'titulacion': titulacion,
-        
+        'alumno': alumno,
+        'acta': acta,  # Asegúrate de pasar el objeto acta al contexto
     }
-    return render(request, 'titulaciones/Acta_alumno.html', context)
+    return render(request, 'acta_Alumno.html', context)
 
-def acta_alumno_view(request, id):
-    acta = get_object_or_404(Acta, id=id)
-    titulacion = acta.titulacion  # Asegúrate de que esta relación existe
-    
+def acta_form_view(request):
+    alumnos = Titulacion.objects.select_related('acta').all()
     if request.method == 'POST':
-        form = ActaForm(request.POST, instance=acta)
-        if form.is_valid():
-            form.save()
-            return redirect('titulacion_list')  # Ajusta esto según tu necesidad
-    else:
-        form = ActaForm(instance=acta)
+        # Procesar los datos del formulario
+        for alumno in alumnos:
+            acta, created = Acta.objects.get_or_create(titulacion=alumno)
+            form = ActaForm(request.POST, instance=acta, prefix=str(alumno.pk))
+            if form.is_valid():
+                form.save()
+        return redirect('acta_form_view')
     
-    return render(request, 'Acta_alumno.html', {
-        'form': form,
-        'acta': acta,
-        'titulacion': titulacion  # Pasar el objeto titulación al template
-    })
-    
+    context = {
+        'alumnos': alumnos,
+    }
+    return render(request, 'titulaciones/acta_form.html', context)
 @login_required
-def guardar_acta(request, pk):
-    titulacion = get_object_or_404(Titulacion, pk=pk)
-    
+@csrf_exempt
+def guardar_acta(request):
     if request.method == 'POST':
-        # Verificar si ya existe un acta para esta titulación
         try:
-            acta = Acta.objects.get(titulacion=titulacion)
-            # Si existe, actualizamos sus campos
-            acta.dia_examen = request.POST.get('dia_examen', '1')
-            acta.mes_examen = request.POST.get('mes_examen', 'enero')
-            acta.anio_examen = request.POST.get('anio_examen', '2025')
-            acta.hora_inicio = request.POST.get('hora_inicio', '12:00')
-            acta.dictamen = request.POST.get('dictamen', 'Aprobado')
-            acta.hora_fin = request.POST.get('hora_fin', '13:00')
-            acta.libro = request.POST.get('libro', '1')
-            acta.foja = request.POST.get('foja', '1')
-            acta.dia_firma = request.POST.get('dia_firma', '1')
-            acta.mes_firma = request.POST.get('mes_firma', 'enero')
-            acta.anio_firma = request.POST.get('anio_firma', '2025')
-            acta.dia_firmma = request.POST.get('dia_firmma', '1')
-            acta.mes_firma_final = request.POST.get('mes_firma_final', 'enero')
-            acta.anio_firmma = request.POST.get('anio_firmma', '2025')
-            acta.nombre_director = request.POST.get('nombre_director', 'DR. Ricardo Ávila García.')
+            data = json.loads(request.body)
+            matricula = data.get('matricula')
+            
+            # Buscar el registro de titulación por matrícula
+            try:
+                titulacion = Titulacion.objects.get(matricula=matricula)
+            except Titulacion.DoesNotExist:
+                return JsonResponse({
+                    'success': False, 
+                    'error': f'No se encontró un alumno con la matrícula {matricula}'
+                }, status=404)
+            
+            # Crear o actualizar el acta
+            acta, created = Acta.objects.get_or_create(titulacion=titulacion)
+            
+            # Actualizar campos del acta
+            campos_acta = [
+                'dia_examen', 'mes_examen', 'anio_examen',
+                'hora_inicio', 'dictamen', 'hora_fin',
+                'libro', 'foja', 'dia_firma',
+                'mes_firma', 'anio_firma', 'dia_firmma',
+                'mes_firma_final', 'anio_firmma'
+            ]
+            
+            for campo in campos_acta:
+                if campo in data:
+                    setattr(acta, campo, data.get(campo))
+            
             acta.save()
-        except Acta.DoesNotExist:
-            # Si no existe, creamos una nueva
-            Acta.objects.create(
-                titulacion=titulacion,
-                dia_examen=request.POST.get('dia_examen', '1'),
-                mes_examen=request.POST.get('mes_examen', 'enero'),
-                anio_examen=request.POST.get('anio_examen', '2025'),
-                hora_inicio=request.POST.get('hora_inicio', '12:00'),
-                dictamen=request.POST.get('dictamen', 'Aprobado'),
-                hora_fin=request.POST.get('hora_fin', '13:00'),
-                libro=request.POST.get('libro', '1'),
-                foja=request.POST.get('foja', '1'),
-                dia_firma=request.POST.get('dia_firma', '1'),
-                mes_firma=request.POST.get('mes_firma', 'enero'),
-                anio_firma=request.POST.get('anio_firma', '2025'),
-                dia_firmma=request.POST.get('dia_firmma', '1'),
-                mes_firma_final=request.POST.get('mes_firma_final', 'enero'),
-                anio_firmma=request.POST.get('anio_firmma', '2025'),
-                nombre_director=request.POST.get('nombre_director', 'DR. Ricardo Ávila García.')
-            )
-        return redirect('titulacion_list')
+            
+            return JsonResponse({
+                'success': True,
+                'message': 'Acta guardada correctamente'
+            })
+            
+        except json.JSONDecodeError:
+            return JsonResponse({
+                'success': False, 
+                'error': 'Formato JSON inválido'
+            }, status=400)
+        except Exception as e:
+            return JsonResponse({
+                'success': False, 
+                'error': f'Error en el servidor: {str(e)}'
+            }, status=500)
     
-    # Para solicitudes GET
-    try:
-        acta = Acta.objects.get(titulacion=titulacion)
-        form_data = {
-            'dia_examen': acta.dia_examen,
-            'mes_examen': acta.mes_examen,
-            'anio_examen': acta.anio_examen,
-            'hora_inicio': acta.hora_inicio,
-            'dictamen': acta.dictamen,
-            'hora_fin': acta.hora_fin,
-            'libro': acta.libro,
-            'foja': acta.foja,
-            'dia_firma': acta.dia_firma,
-            'mes_firma': acta.mes_firma,
-            'anio_firma': acta.anio_firma,
-            'dia_firmma': acta.dia_firmma,
-            'mes_firma_final': acta.mes_firma_final,
-            'anio_firmma': acta.anio_firmma,
-            'nombre_director': acta.nombre_director
-        }
-    except Acta.DoesNotExist:
-        form_data = {
-            'dia_examen': '1',
-            'mes_examen': 'enero',
-            'anio_examen': '2025',
-            'hora_inicio': '12:00',
-            'dictamen': 'Aprobado',
-            'hora_fin': '13:00',
-            'libro': '1',
-            'foja': '1',
-            'dia_firma': '1',
-            'mes_firma': 'enero',
-            'anio_firma': '2025',
-            'dia_firmma': '1',
-            'mes_firma_final': 'enero',
-            'anio_firmma': '2025',
-            'nombre_director': 'DR. Ricardo Ávila García'
+    return JsonResponse({
+        'success': False, 
+        'error': 'Método no permitido. Se requiere POST'
+    }, status=405)
+
+def acta_form_view(request):
+    # Obtener parámetros de búsqueda
+    search_query = request.GET.get('q', '')
+    tipo_titulacion = request.GET.get('tipo', 'todas')
+    
+    # Obtener todos los alumnos con sus actas relacionadas
+    alumnos = Titulacion.objects.select_related('acta', 'asesor', 'revisor_1', 'revisor_2').all()
+    
+    # Aplicar filtro de búsqueda si hay término
+    if search_query:
+        alumnos = alumnos.filter(
+            Q(matricula__icontains=search_query) |
+            Q(nombre__icontains=search_query) |
+            Q(apellido_paterno__icontains=search_query) |
+            Q(apellido_materno__icontains=search_query)
+        )
+    
+    # Aplicar filtro por tipo de titulación
+    if tipo_titulacion != 'todas':
+        if tipo_titulacion == 'Examen General':
+            alumnos = alumnos.filter(opcion_de_titulacion__contains='Examen General de Egreso')
+        else:
+            alumnos = alumnos.filter(opcion_de_titulacion=tipo_titulacion)
+    
+    # Obtener datos del director
+    director = Director.objects.first()
+    if not director:
+        director = {
+            'sigla': 'DR.',
+            'nombre': 'Ricardo',
+            'apellidos': 'Ávila García'
         }
     
     context = {
-        'titulacion': titulacion,
-        'form': form_data
+        'alumnos': alumnos,
+        'director': director,
+        'request': request
     }
-    return render(request, 'titulaciones/Acta_alumno.html', context)
+    
+    return render(request, 'titulaciones/acta_form.html', context)
+
+def acta_alumno_view(request, pk):
+    alumno = get_object_or_404(Titulacion, pk=pk)
+    return render(request, 'titulaciones/Acta_Alumno.html', {'alumno': alumno})
+
+@csrf_exempt
+def guardar_director(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            director, created = Director.objects.get_or_create(id=1)
+            director.sigla = data.get('sigla', 'DR.')
+            director.nombre = data.get('nombre', '')
+            director.apellidos = data.get('apellidos', '')
+            director.save()
+            
+            return JsonResponse({'success': True})
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)})
+    
+    return JsonResponse({'success': False, 'error': 'Método no permitido'})

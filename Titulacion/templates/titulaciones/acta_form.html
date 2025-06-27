@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actas de Alumnos</title>
+    <style>
+        /* Estilos base */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fffde7;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            font-size: 10pt;
+        }
+        
+        /* Contenedor principal */
+        .container_list {
+            margin: 1cm auto; 
+            background-color: #ffffff; 
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 95%;
+            max-width: none;
+        }
+        
+        /* Encabezado */
+        .header-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin: 0 auto 20px;
+            background-color: #d2b48c;
+            padding: 10px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            font-size: 14pt;
+        }
+        
+        /* Botones */
+        .back-button {
+            padding: 12px 24px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-left: auto;
+        }
+        
+        .back-button:hover {
+            background-color: #2980b9;
+        }
+        
+        .regresar-button {
+            padding: 12px 24px;
+            background-color: #4CAF50; /* Verde */
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-left: auto;
+        }
+        
+        .regresar-button:hover {
+            background-color: #3e8e41; /* Verde más oscuro */
+        }
+        
+        /* Contenedor de búsqueda y filtros */
+        .search-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            padding-bottom: 5px;
+        }
+        
+        .filter-container {
+            display: flex;
+            align-items: center;
+            min-width: 350px;
+            flex-grow: 1;
+        }
+        
+        .filter-container label {
+            margin-right: 10px;
+            white-space: nowrap;
+        }
+        
+        #filtro-titulacion {
+            min-width: 250px;
+            flex-grow: 1;
+        }
+        
+        .search-form {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-grow: 1;
+            min-width: 200px;
+        }
+        
+        .search-input {
+            min-width: 250px;
+            flex-grow: 1;
+        }
+        
+        .search-button {
+            padding: 8px 16px;
+            min-width: 100px;
+        }
+        
+        /* Tablas */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            font-size: 11pt;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px 6px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #4CAF50; /* Verde */
+            color: white;
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        
+        .section-title {
+            background-color: #2c3e50;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            font-size: 9pt;
+        }
+        
+        /* Tabla específica del director */
+        .director-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            font-size: 10pt;
+        }
+        
+        .director-table th {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 10px;
+        }
+        
+        .director-table td {
+            text-align: center;
+            padding: 10px;
+        }
+        
+        /* Formularios y controles */
+        .form-control {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        
+        .date-container {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .date-day {
+            width: 35px;
+        }
+        
+        .date-month {
+            flex-grow: 1;
+            min-width: 50px;
+        }
+        
+        .date-year {
+            width: 50px;
+        }
+        
+        /* Botones de acción */
+        .btn {
+            padding: 6px 12px;
+            margin: 2px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .btn-edit {
+            background-color: #f39c12;
+            color: white;
+        }
+        
+        .btn-save {
+            background-color: #27ae60;
+            color: white;
+        }
+        
+        .btn-cancel {
+            background-color: #e74c3c;
+            color: white;
+        }
+        
+        .btn-print {
+            background-color: #9b59b6;
+            color: white;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .table-action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+        }
+        
+        /* Clases de utilidad */
+        .readonly {
+            background-color: #f9f9f9;
+            border: 1px solid #eee;
+        }
+        
+        .non-editable {
+            background-color: #f5f5f5;
+            padding: 8px;
+            display: block;
+        }
+        
+        .titulacion-header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 10px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        
+        .title-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        /* Contenedor para tablas con scroll */
+        .table-scroll-container {
+            width: 100%;
+            overflow-x: auto;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Estilos para impresión */
+        @media print {
+            .no-print {
+                display: none;
+            }
+            body {
+                margin: 0;
+                padding: 0;
+                background-color: white;
+            }
+            .container_list {
+                box-shadow: none;
+                margin: 0;
+                padding: 0;
+                width: 100%;
+            }
+            table {
+                box-shadow: none;
+            }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container_list {
+                margin: 0.5cm;
+                padding: 10px;
+                width: 98%;
+            }
+            
+            .search-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .filter-container, .search-form {
+                width: 100%;
+            }
+            
+            #filtro-titulacion, .search-input {
+                width: 100%;
+            }
+            
+            th, td {
+                padding: 8px 6px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container_list">
+        <div class="title-container">
+            <h1>ACTAS DE ALUMNOS</h1>
+        </div>
+        
+        <form method="GET" action="{% url 'acta_form' %}" class="no-print search-container">
+            <div class="filter-container">
+                <label for="filtro-titulacion" class="back-button no-print">Filtrar por tipo:</label>
+                <select id="filtro-titulacion" name="tipo" class="form-control" onchange="this.form.submit()">
+                    <option value="todas" {% if request.GET.tipo == 'todas' or not request.GET.tipo %}selected{% endif %}>Mostrar todas</option>
+                    <option value="Residencia Profesional" {% if request.GET.tipo == 'Residencia Profesional' %}selected{% endif %}>Residencia Profesional</option>
+                    <option value="Tesis o Tesina" {% if request.GET.tipo == 'Tesis o Tesina' %}selected{% endif %}>Tesis o Tesina</option>
+                    <option value="Proyecto de Investigación y/o Desarrollo Tecnológico" {% if request.GET.tipo == 'Proyecto de Investigación y/o Desarrollo Tecnológico' %}selected{% endif %}>Proyecto de Investigación</option>
+                    <option value="Proyecto Integrador" {% if request.GET.tipo == 'Proyecto Integrador' %}selected{% endif %}>Proyecto Integrador</option>
+                    <option value="Proyecto Productivo" {% if request.GET.tipo == 'Proyecto Productivo' %}selected{% endif %}>Proyecto Productivo</option>
+                    <option value="Proyecto de Innovación Tecnológica" {% if request.GET.tipo == 'Proyecto de Innovación Tecnológica' %}selected{% endif %}>Proyecto de Innovación Tecnológica</option>
+                    <option value="Proyecto de Emprededurismo" {% if request.GET.tipo == 'Proyecto de Emprededurismo' %}selected{% endif %}>Proyecto de Emprededurismo</option>
+                    <option value="Estancia" {% if request.GET.tipo == 'Estancia' %}selected{% endif %}>Estancia</option>
+                    <option value="Examen General" {% if request.GET.tipo == 'Examen General' %}selected{% endif %}>Examen General (EGEL)</option>
+                </select>
+            </div>
+            
+            <div class="search-form">
+                <input type="text" name="q" class="form-control search-input" 
+                       placeholder="Buscar por nombre o matrícula..." 
+                       value="{{ request.GET.q }}">
+                <button type="submit" class="back-button no-print">Buscar</button>
+            </div>
+            <div>
+                <a href="{% url 'titulacion_list' %}" class="regresar-button no-print">Regresar</a>
+            </div>   
+        </form>
+
+        <!-- Tabla del Director -->
+        <table class="director-table no-print">
+            <thead>
+                <tr>
+                    <th colspan="4" class="section-title">INFORMACIÓN DEL DIRECTOR</th>
+                </tr>
+                <tr>
+                    <th style="width: 10%">Sigla</th>
+                    <th style="width: 25%">Nombre</th>
+                    <th style="width: 45%">Apellidos</th>
+                    <th style="width: 20%">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr id="director-row">
+                    <td><input type="text" class="form-control sigla" name="director_sigla" value="{{ director.sigla|default:'D.' }}" readonly></td>
+                    <td><input type="text" class="form-control nombre" name="director_nombre" value="{{ director.nombre|default:'Nombre' }}" readonly></td>
+                    <td><input type="text" class="form-control apellidos" name="director_apellidos" value="{{ director.apellidos|default:'Apellidos' }}" readonly></td>
+                    <td>
+                        <div class="table-action-buttons">
+                            <button class="btn btn-edit" onclick="enableDirectorEditing()">Editar</button>
+                            <button class="btn btn-save" onclick="saveDirector()" style="display: none;">Guardar</button>
+                            <button class="btn btn-cancel" onclick="cancelDirectorEditing()" style="display: none;">Cancelar</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Título dinámico -->
+        <h2 class="titulacion-header">
+            {% if request.GET.tipo and request.GET.tipo != 'todas' %}
+                ACTAS DE {{ request.GET.tipo|upper }}
+            {% else %}
+                TODAS LAS ACTAS DE TITULACIÓN
+            {% endif %}
+            {% if request.GET.q %}
+                - RESULTADOS PARA: "{{ request.GET.q }}"
+            {% endif %}
+        </h2>
+
+        <!-- Tabla de actas con contenedor de scroll -->
+        <div class="table-scroll-container">
+            <table id="actasTable">
+                <thead>
+                    <tr>
+                        <th colspan="8" class="section-title">INFORMACIÓN DEL ALUMNO</th>
+                        <th colspan="9" class="section-title">INFORMACIÓN DEL ACTA</th>
+                    </tr>
+                    <tr>
+                        <th>Matrícula</th>
+                        <th>Nombre Completo</th>
+                        <th>Carrera</th>
+                        <th>Tipo de Titulación</th>
+                        <th>Nombre del Proyecto</th>
+                        <th>Presidente</th>
+                        <th>Secretario</th>
+                        <th>Vocal</th>
+                        <th>Fecha</th>
+                        <th>Hora Inicio</th>
+                        <th>Resultado</th>
+                        <th>Hora Termino</th>
+                        <th>Libro</th>
+                        <th>Foja</th>
+                        <th>Fecha Firma</th>
+                        <th>Fecha Autorizada</th>
+                        <th class="no-print">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for alumno in alumnos %}
+                    <tr data-matricula="{{ alumno.matricula }}">
+                        <td>{{ alumno.matricula }}</td>
+                        <td>{{ alumno.nombre }} {{ alumno.apellido_paterno}} {{ alumno.apellido_materno }}</td>
+                        <td>{{ alumno.carrera }}</td>
+                        <td>{{ alumno.opcion_de_titulacion }}</td>
+                        <td>{{ alumno.nombre_del_proyecto }}</td>
+                        <td>{{ alumno.asesor.sigla }} 
+                            {{ alumno.asesor.nombreProfesor }}
+                            {{ alumno.asesor.apellidoPaterno }} 
+                            {{ alumno.asesor.apellidoMaterno }}
+                        </td>
+                        <td>{{ alumno.revisor_1.sigla}}
+                            {{ alumno.revisor_1.nombreProfesor }}
+                            {{ alumno.revisor_1.apellidoPaterno }} 
+                            {{ alumno.revisor_1.apellidoMaterno }}
+                        </td>
+                        <td>{{ alumno.revisor_2.sigla}}
+                            {{ alumno.revisor_2.nombreProfesor }}
+                            {{ alumno.revisor_2.apellidoPaterno }} 
+                            {{ alumno.revisor_2.apellidoMaterno }}
+                        </td>
+                        <td>
+                            <div class="date-container">
+                                <input type="text" class="form-control date-day" name="dia_examen" value="{{ alumno.acta.dia_examen|default:'1' }}" placeholder="Día" readonly>
+                                <input type="text" class="form-control date-month" name="mes_examen" value="{{ alumno.acta.mes_examen|default:'enero' }}" placeholder="Mes" list="meses" readonly>
+                                <input type="text" class="form-control date-year" name="anio_examen" value="{{ alumno.acta.anio_examen|default:'2025' }}" placeholder="Año" readonly>
+                            </div>
+                        </td>
+                        <td><input type="text" class="form-control" name="hora_inicio" value="{{ alumno.acta.hora_inicio|default:'12:00' }}" readonly></td>
+                        <td>
+                            <input type="text" class="form-control" name="dictamen" value="{{ alumno.acta.dictamen|default:'Aprobado' }}" list="resultados" readonly>
+                            <datalist id="resultados">
+                                <option value="Aprobado">
+                                <option value="Aprobado con Mención Honorífica">
+                                <option value="Reprobado">
+                            </datalist>
+                        </td>
+                        <td><input type="text" class="form-control" name="hora_fin" value="{{ alumno.acta.hora_fin|default:'13:00' }}" readonly></td>
+                        <td><input type="text" class="form-control" name="libro" value="{{ alumno.acta.libro|default:'1' }}" readonly></td>
+                        <td><input type="text" class="form-control" name="foja" value="{{ alumno.acta.foja|default:'1' }}" readonly></td>
+                        <td>
+                            <div class="date-container">
+                                <input type="text" class="form-control date-day" name="dia_firma" value="{{ alumno.acta.dia_firma|default:'1' }}" placeholder="Día" readonly>
+                                <input type="text" class="form-control date-month" name="mes_firma" value="{{ alumno.acta.mes_firma|default:'enero' }}" placeholder="Mes" list="meses" readonly>
+                                <input type="text" class="form-control date-year" name="anio_firma" value="{{ alumno.acta.anio_firma|default:'2025' }}" placeholder="Año" readonly>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="date-container">
+                                <input type="text" class="form-control date-day" name="dia_firmma" value="{{ alumno.acta.dia_firmma|default:'1' }}" placeholder="Día" readonly>
+                                <input type="text" class="form-control date-month" name="mes_firmma" value="{{ alumno.acta.mes_firma_final|default:'enero' }}" placeholder="Mes" list="meses" readonly>
+                                <input type="text" class="form-control date-year" name="anio_firmma" value="{{ alumno.acta.anio_firmma|default:'2025' }}" placeholder="Año" readonly>
+                            </div>
+                        </td>
+                        <td class="no-print">
+                            <div class="table-action-buttons">
+                                <button class="btn btn-edit" onclick="enableEditing(this)">Editar</button>
+                                <button class="btn btn-save" onclick="saveRow(this)" style="display: none;">Guardar</button>
+                                <button class="btn btn-cancel" onclick="cancelEditing(this)" style="display: none;">Cancelar</button>
+                                <a href="{% url 'acta_Alumno' alumno.pk %}" class="btn btn-print" target="_self">Imprimir</a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <datalist id="meses">
+            <option value="enero">
+            <option value="febrero">
+            <option value="marzo">
+            <option value="abril">
+            <option value="mayo">
+            <option value="junio">
+            <option value="julio">
+            <option value="agosto">
+            <option value="septiembre">
+            <option value="octubre">
+            <option value="noviembre">
+            <option value="diciembre">
+        </datalist>
+    </div>
+
+    <script>
+        // ==============================================
+        // FUNCIONES ESPECÍFICAS PARA EL DIRECTOR
+        // ==============================================
+
+        // Función para habilitar edición del director
+        function enableDirectorEditing() {
+            const row = document.getElementById('director-row');
+            const inputs = row.querySelectorAll('input');
+            const actionButtons = row.querySelector('.table-action-buttons');
+            
+            // Habilitar campos de edición
+            inputs.forEach(input => {
+                input.readOnly = false;
+                input.classList.remove('readonly');
+            });
+            
+            // Mostrar botones de guardar y cancelar
+            actionButtons.querySelector('.btn-edit').style.display = 'none';
+            actionButtons.querySelector('.btn-save').style.display = 'inline-block';
+            actionButtons.querySelector('.btn-cancel').style.display = 'inline-block';
+        }
+
+        // Función para cancelar edición del director
+        function cancelDirectorEditing() {
+            const row = document.getElementById('director-row');
+            const inputs = row.querySelectorAll('input');
+            const actionButtons = row.querySelector('.table-action-buttons');
+            
+            // Deshabilitar campos de edición
+            inputs.forEach(input => {
+                input.readOnly = true;
+                input.classList.add('readonly');
+            });
+            
+            // Restaurar botones a estado inicial
+            actionButtons.querySelector('.btn-edit').style.display = 'inline-block';
+            actionButtons.querySelector('.btn-save').style.display = 'none';
+            actionButtons.querySelector('.btn-cancel').style.display = 'none';
+        }
+
+        // Función para guardar datos del director
+        function saveDirector() {
+            const row = document.getElementById('director-row');
+            const formData = {
+                'sigla': row.querySelector('[name="director_sigla"]').value,
+                'nombre': row.querySelector('[name="director_nombre"]').value,
+                'apellidos': row.querySelector('[name="director_apellidos"]').value,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            };
+
+            // Deshabilitar botón durante el envío
+            const saveBtn = row.querySelector('.btn-save');
+            saveBtn.disabled = true;
+            saveBtn.textContent = "Guardando...";
+
+            fetch("{% url 'guardar_director' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.success) {
+                    alert('Datos del director actualizados correctamente');
+                    cancelDirectorEditing();
+                } else {
+                    alert('Error: ' + (data.error || 'Error al guardar'));
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error al conectar con el servidor');
+            })
+            .finally(() => {
+                saveBtn.disabled = false;
+                saveBtn.textContent = "Guardar";
+            });
+        }
+
+        // ==============================================
+        // FUNCIONES PARA LAS ACTAS DE ALUMNOS
+        // ==============================================
+
+        // Función para calcular la hora de fin basada en la hora de inicio
+        function calcularHoraFin(horaInicio) {
+            if (!/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/.test(horaInicio)) {
+                return '';
+            }
+            
+            const [horas, minutos] = horaInicio.split(':').map(Number);
+            let nuevasHoras = horas + 1;
+            
+            if (nuevasHoras >= 24) {
+                nuevasHoras -= 24;
+            }
+            
+            const horaFormateada = nuevasHoras.toString().padStart(2, '0');
+            const minutosFormateados = minutos.toString().padStart(2, '0');
+            
+            return `${horaFormateada}:${minutosFormateados}`;
+        }
+
+        // Función para manejar el cambio en la hora de inicio
+        function manejarCambioHoraInicio(input) {
+            const horaInicio = input.value;
+            const horaFinInput = input.closest('tr').querySelector('[name="hora_fin"]');
+            
+            if (horaInicio) {
+                const horaFin = calcularHoraFin(horaInicio);
+                horaFinInput.value = horaFin;
+            }
+        }
+
+        // Función para habilitar edición
+        function enableEditing(button) {
+            const row = button.closest('tr');
+            
+            // Habilitar todos los campos de entrada
+            const inputs = row.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.readOnly = false;
+                input.classList.remove('readonly');
+            });
+            
+            // Agregar event listener para la hora de inicio
+            const horaInicioInput = row.querySelector('[name="hora_inicio"]');
+            if (horaInicioInput) {
+                horaInicioInput.addEventListener('input', function() {
+                    manejarCambioHoraInicio(this);
+                });
+            }
+            
+            // Obtener el contenedor de botones
+            const actionButtons = button.closest('.table-action-buttons');
+            
+            // Mostrar/ocultar los botones correctamente
+            if (actionButtons) {
+                const btnEdit = actionButtons.querySelector('.btn-edit');
+                const btnSave = actionButtons.querySelector('.btn-save');
+                const btnCancel = actionButtons.querySelector('.btn-cancel');
+                const btnPrint = actionButtons.querySelector('.btn-print');
+                
+                if (btnEdit) btnEdit.style.display = 'none';
+                if (btnSave) btnSave.style.display = 'inline-block';
+                if (btnCancel) btnCancel.style.display = 'inline-block';
+                if (btnPrint) btnPrint.style.display = 'none';
+            }
+        }
+        
+        // Función para cancelar edición
+        function cancelEditing(button) {
+            const row = button.closest('tr');
+            
+            // Remover event listener de la hora de inicio
+            const horaInicioInput = row.querySelector('[name="hora_inicio"]');
+            if (horaInicioInput) {
+                horaInicioInput.removeEventListener('input', manejarCambioHoraInicio);
+            }
+            
+            // Deshabilitar todos los campos de entrada
+            const inputs = row.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.readOnly = true;
+                input.classList.add('readonly');
+            });
+            
+            // Obtener el contenedor de botones
+            const actionButtons = button.closest('.table-action-buttons');
+            
+            // Restaurar visibilidad de botones
+            if (actionButtons) {
+                const btnEdit = actionButtons.querySelector('.btn-edit');
+                const btnSave = actionButtons.querySelector('.btn-save');
+                const btnCancel = actionButtons.querySelector('.btn-cancel');
+                const btnPrint = actionButtons.querySelector('.btn-print');
+                
+                if (btnEdit) btnEdit.style.display = 'inline-block';
+                if (btnSave) btnSave.style.display = 'none';
+                if (btnCancel) btnCancel.style.display = 'none';
+                if (btnPrint) btnPrint.style.display = 'inline-block';
+            }
+        }
+
+        // Función para guardar los datos del alumno
+        function saveRow(button) {
+            const row = button.closest('tr');
+            const matricula = row.dataset.matricula;
+            
+            // Crear objeto con todos los datos del formulario
+            const formData = {
+                'matricula': matricula,
+                'dia_examen': row.querySelector('[name="dia_examen"]').value,
+                'mes_examen': row.querySelector('[name="mes_examen"]').value,
+                'anio_examen': row.querySelector('[name="anio_examen"]').value,
+                'hora_inicio': row.querySelector('[name="hora_inicio"]').value,
+                'dictamen': row.querySelector('[name="dictamen"]').value,
+                'hora_fin': row.querySelector('[name="hora_fin"]').value,
+                'libro': row.querySelector('[name="libro"]').value,
+                'foja': row.querySelector('[name="foja"]').value,
+                'dia_firma': row.querySelector('[name="dia_firma"]').value,
+                'mes_firma': row.querySelector('[name="mes_firma"]').value,
+                'anio_firma': row.querySelector('[name="anio_firma"]').value,
+                'dia_firmma': row.querySelector('[name="dia_firmma"]').value,
+                'mes_firma_final': row.querySelector('[name="mes_firmma"]').value,
+                'anio_firmma': row.querySelector('[name="anio_firmma"]').value,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            };
+
+            // Mostrar datos en consola para depuración
+            console.log("Datos a enviar:", formData);
+
+            // Deshabilitar botón durante el envío
+            button.disabled = true;
+            button.textContent = "Guardando...";
+
+            fetch("{% url 'guardar_acta' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(err => { throw err; });
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    cancelEditing(button);
+                } else {
+                    throw new Error(data.error || 'Error al guardar');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error: ' + error.message);
+            })
+            .finally(() => {
+                button.disabled = false;
+                button.textContent = "Guardar";
+            });
+        }
+    </script>
+</body>
+</html>

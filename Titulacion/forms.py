@@ -2,7 +2,7 @@ from django import forms
 from .models import Titulacion
 from .models import Profesor
 from .models import Acta
-
+from django.template.defaultfilters import filesizeformat
 
 class TitulacionForm(forms.ModelForm):
     class Meta:
@@ -11,11 +11,8 @@ class TitulacionForm(forms.ModelForm):
                   'carrera','edad', 'telefono', 'dialecto','promedio',
                   'nombre_del_proyecto','archivo',
                   'opcion_de_titulacion', 'asesor','revisor_1',
-                  'revisor_2','lugar','discapacidad', 'genero','modalidad', 
-                  
-                  
-                   
-        ]
+                  'revisor_2','lugar','discapacidad', 'genero','modalidad', 'periodo_escolar_Inicio', 'periodo_escolar_Final',
+                ]
         labels = {
             'correo': 'Correo Electrónico',
             'matricula': 'Matrícula',
@@ -27,8 +24,8 @@ class TitulacionForm(forms.ModelForm):
             'telefono': 'Telefono',
             'dialecto': 'Dialecto',
             'promedio': 'Promedio',
-            'nombre_del_proyecto': 'NOMBRE DEL PROYECTO (Debe respetar el uso de minúsculas y mayúsculas según corresponda)',
-            'archivo': 'Adjunta tu proyecto final en formato PDF (el archivo debe pesar máximo 10mb)',
+            'nombre_del_proyecto': 'NOMBRE DEL PROYECTO',
+            'archivo': 'Proyecto',
             'opcion_de_titulacion': 'Opción de Titulación',
             'asesor': 'Nombre del Asesor',
             'revisor_1': 'Nombre del Revisor 1',
@@ -37,8 +34,23 @@ class TitulacionForm(forms.ModelForm):
             'discapacidad': '¿Tiene alguna discapacidad?',
             'genero': 'Género',
             'modalidad': 'Modalidad',
+            'periodo_escolar_Inicio': 'Periodo Escolar De Inicio',
+            'periodo_escolar_Final': 'Periodo Escolar De Final'
         }
-        
+    def clean_archivo(self):
+        archivo = self.cleaned_data.get('archivo', False)
+        if archivo:
+            limit_mb = 10
+            limit_bytes = limit_mb * 1024 * 1024
+            if archivo.size > limit_bytes:
+                raise forms.ValidationError(f'El tamaño máximo del archivo es {filesizeformat(limit_bytes)}. Tamaño actual: {filesizeformat(archivo.size)}')
+        return archivo
+    
+    def clean_matricula(self):
+        matricula = self.cleaned_data.get('matricula')
+        if Titulacion.objects.filter(matricula=matricula).exists():
+            raise forms.ValidationError("Esta matrícula ya está registrada.")
+        return matricula    
         
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -56,13 +68,15 @@ class TitulacionForm(forms.ModelForm):
 class ProfesorForm(forms.ModelForm):
     class Meta:
         model = Profesor
-        fields = ['sigla','nombreProfesor', 'apellidoPaterno', 'apellidoMaterno', 'cedulaProfesor']
+        fields = ['sigla','nombreProfesor', 'apellidoPaterno', 'apellidoMaterno', 'cedulaProfesor', 'telefono_prof', 'email_prof']
         labels = {
             'sigla': 'Nivel Academico',
             'nombreProfesor': 'Nombre',
             'apellidoPaterno': 'Apellido Paterno',
             'apellidoMaterno': 'Apellido Materno',
             'cedulaProfesor': 'Cédula',
+            'telefono_prof': 'Telefono',
+            'email_prof': 'Email'           
         }
 
 class ActaForm(forms.ModelForm):

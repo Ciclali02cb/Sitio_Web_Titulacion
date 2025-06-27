@@ -10,12 +10,14 @@
 <body>
     <div class="container_list">
         <h1>Profesores</h1>
-        <form method="GET" action="{% url 'lista_profesores' %}" class="search-form">
+        <form method="GET" action="{% url 'lista_profesores' %}" class="form-buscar">
             <input type="text" name="query" value="{{ query }}" placeholder="Buscar por nombre o cédula..." class="input-buscar">
             <button type="submit" class="buscar-btn">Buscar</button>
         </form>
-        <a href="{% url 'agregar_profesor' %}" class="crear-btn">Agregar Nuevo Profesor</a>
-        <a href="{% url 'home' %}" class="regresar-btn">← Regresar</a>
+        <div class="botones-superiores">
+        <a href="{% url 'agregar_profesor' %}" class="acta-btn">Agregar Nuevo Profesor</a>
+        <a href="{% url 'home' %}" class="acta-btn">← Regresar</a>
+        </div>
         <table>
             <thead>
                 <tr>
@@ -24,6 +26,8 @@
                     <th>Apellido Paterno</th>
                     <th>Apellido Materno</th>
                     <th>Cédula</th>
+                    <th>Telefono</th>
+                    <th>Email</th>
                     <th colspan="2">Opciones</th>
                 </tr>
             </thead>
@@ -35,12 +39,14 @@
                     <td>{{ profesor.apellidoPaterno }}</td>
                     <td>{{ profesor.apellidoMaterno }}</td>
                     <td>{{ profesor.cedulaProfesor }}</td>
+                    <td>{{ profesor.telefono_prof }}</td>
+                    <td>{{ profesor.email_prof }}</td>
                     <td><a href="{% url 'update_profesor' profesor.pk %}">Modificar</a></td>
                     <td><a href="{% url 'delete_profesor' profesor.pk %}">Eliminar</a></td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="7">No se encontraron resultados.</td>
+                    <td colspan="9">No se encontraron resultados.</td>
                 </tr>
                 {% endfor %}
             </tbody>

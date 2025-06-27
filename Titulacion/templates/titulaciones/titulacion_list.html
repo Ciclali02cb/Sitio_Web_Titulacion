@@ -9,21 +9,20 @@
     <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
 </head>
 <body>
-       
-        <div class="container_list">
+    <div class="container_list">
             <h1>Lista de Alumnos</h1>
             <form method="GET" action="{% url 'titulacion_list' %}" class="form-buscar">
-            <input type="text" name="q" value="{{ query }}" placeholder="Buscar por nombre, correo, matrícula..." class="input-buscar">
-            <button type="submit" class="buscar-btn">Buscar</button>
-        </form>
-            <!-- Contenedor para los botones -->
+                <input type="text" name="q" value="{{ query }}" placeholder="Buscar por nombre, correo, matrícula..." class="input-buscar">
+                <button type="submit" class="buscar-btn">Buscar</button>
+            </form>
             <div class="botones-superiores">
-
-                <a href="{% url 'home' %}" class="regresar-btn">← Regresar</a>
+            <a href="{% url 'acta_form' %}" class="acta-btn">Generar Acta</a>
+            <a href="{% url 'home' %}" class="acta-btn">← Regresar</a>
             </div>
-        <table class="titulacion-table">
-            <thead>
-                <tr>
+            <div class="table-container">
+            <table class="titulacion-table">
+                <thead>
+                    <tr>
                     <th>Correo</th>
                     <th>Matrícula</th>
                     <th>Nombres</th>
@@ -38,6 +37,8 @@
                     <th>Asesor</th>
                     <th>Revisor 1</th>
                     <th>Revisor 2</th>
+                    <th>Opción de Titulación</th>
+                    <th>Periodo Escolar</th>
                     <th>Archivo</th>
                     <th colspan="2">Opción</th>
                 </tr>
@@ -86,10 +87,10 @@
                         -
                         {% endif %}
                     </td>
+                    <td>{{ titulacion.opcion_de_titulacion}}</td>
+                    <td>{{ titulacion.periodo_escolar_Inicio }} / {{ titulacion.periodo_escolar_Final }}</td>
                     <td><a href="{{ titulacion.archivo.url }}">Descargar</a></td>
                     <td><a href="{% url 'delete_titulacion' titulacion.pk %}">Eliminar</a></td>
-                    <td><a href="{% url 'acta_Alumno' titulacion.pk %}">Acta</a></td>
-                   
                 </tr>
                 {% empty %}
                 <tr>
@@ -98,5 +99,7 @@
                 {% endfor %}
             </tbody>
         </table>
+    </div>
+</div>
 </body>
 </html>

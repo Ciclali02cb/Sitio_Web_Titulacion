@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         /* Estilos generales */
         body {
@@ -70,13 +71,12 @@
             margin-right: 1.3cm;  
             text-indent: 0;
             width: auto;  
-            line-height: 1.4; /* Reducir espacio entre líneas */
-            margin-top: 0; /* Eliminar márgenes superiores */
-            margin-bottom: 0; /* Eliminar márgenes inferiores */
-            padding: 0; /* Eliminar padding */        
+            line-height: 1.4;
+            margin-top: 0;
+            margin-bottom: 0;
+            padding: 0;      
         }
        
-               
         .text-center {
             text-align: center;
             font-size: 9.5pt;
@@ -86,24 +86,34 @@
         .oval-photo {
             position: absolute;
             left: 1.3cm;
-            top: 9.5cm; /* 0.2cm más abajo */
+            top: 9.5cm;
             width: 3.2cm;
-            height: 4.9cm; /* 0.5cm más larga */
+            height: 4.9cm;
             border-radius: 50%;
             border: 1px solid #000;
             object-fit: cover;
         }
-        
-        .right-image {
+        /*.right-image {
             position: absolute;
             right: 2.3cm;
             top: 2cm;
-            width: 1.7cm;      /* Ancho deseado */
-            height: 4.5cm;     /* Alto deseado */
-            object-fit: contain; /* Escala proporcionalmente sin deformar */
-            background-color: transparent !important; /* Fuerza transparencia */
-        }
+            width: 1.7cm;  
+            height: auto;   
+            max-height: 2.5cm;
+            object-fit: contain;
+            background-color: transparent !important;
+        }*/
         
+        .right-image {
+            position: absolute;
+            right: 2.3cm;       /* Posición fija desde la derecha */
+            top: 2cm;           /* Posición fija desde arriba */
+            width: 1.73cm;      /* Ancho deseado */
+            height: 3.46cm;     /* Alto deseado */
+            object-fit: contain; /* Mantiene proporciones SIN recortar */
+            object-position: center; /* Centra la imagen en el espacio */
+            background-color: transparent !important;
+        }
         /* Estilos para las firmas */
         .signature-section {
             margin-top: 50px;
@@ -120,7 +130,7 @@
             margin-bottom: 30px;
         }
         .signature-section div > p {
-            margin: 0.2em 0; /* Márgenes muy reducidos (0.2em ≈ 3px) */
+            margin: 0.2em 0;
         }
         .secretary, .vocal {
             text-align: center;
@@ -221,13 +231,14 @@
             margin-bottom: 5px;
             margin: right 0.1cm; 
             width: calc(100% - 2cm);
-            line-height: 1.0;     /* Interlineado sencillo (sin espacio adicional) */   
+            line-height: 1.0;     
         }
         .institutional-text2 {
             font-weight: bold;
             text-align: center;
             font-size: 12pt;
             margin-bottom: 5px;
+            margin-right: 1.3cm;
         }
         
         .document-title {
@@ -237,6 +248,7 @@
             margin-bottom: 20px;
             text-decoration: none; 
         }
+        
         /* Estilo para los inputs */
         .input-text {
             border: none;
@@ -301,45 +313,52 @@
             outline: none;
         }
         
-        .nombre-subrayado {
-            border-bottom: 1px solid black;
-            display: inline-block; 
-            width: 400px;        
-            padding-bottom: 2px;
-        }
-        .nombre-subrayado2 {
-            border-bottom: 1px solid black;
-            display: inline-block; 
-            width: 445px;        
-            padding-bottom: 2px;
-        }
-        .linea-firma {
-            border-bottom: 1px solid black;  
-            padding-bottom: 0.5px;           
-            display: inline-block;           
-            min-width: 78%;                 
-        }
-        .linea-firma1 {
-            border-bottom: 1px solid black;  
-            padding-bottom: 2px;             
-            display: inline-block;           
-            min-width: 70%;                 
-        }
-        .linea-firma2 {
-            border-bottom: 1px solid black;  
-            padding-bottom: 2px;             
-            display: inline-block;           
-            min-width: 100%;                 
-        }
+        /* --- Ajustes para líneas pegadas al texto --- */
+        .nombre-subrayado, 
+        .nombre-subrayado2, 
+        .linea-firma, 
+        .linea-firma1, 
+        .linea-firma2, 
         .linea-firma3 {
             border-bottom: 1px solid black;
             display: inline-block;
-            padding-bottom: 1px;           /* Línea pegada al texto */
+            line-height: 0.8;
+            vertical-align: baseline;
+            margin-bottom: -0.2em;
+            box-sizing: border-box;
+        }
+
+        .nombre-subrayado {
+            width: 400px;
+            padding-bottom: 1px;
+        }
+
+        .nombre-subrayado2 {
+            width: 445px;
+            padding-bottom: 1px;
+        }
+
+        .linea-firma {
+            min-width: 78%;
+            padding-bottom: 1px;
+        }
+
+        .linea-firma1 {
+            min-width: 70%;
+            padding-bottom: 1px;
+        }
+
+        .linea-firma2 {
+            min-width: 100%;
+            padding-bottom: 1px;
+        }
+
+        .linea-firma3 {
+            min-width: 2.8cm;
             text-align: center;
-            min-width: 2.8cm;                  /* Ancho flexible */
-            line-height: 1;
-    
-}
+            padding-bottom: 1px;
+        }
+
         .texto-subrayado {
             text-decoration: underline;
         }
@@ -348,59 +367,83 @@
         .secretary, 
         .vocal, 
         .director {
-            margin-right: 0.2cm; /* Mover 1cm a la derecha */
+            margin-right: 0.2cm;
         }
 
-        /* Estilos para separar títulos de nombres en firmas */
         .president p:first-child,
         .secretary p:first-child,
         .vocal p:first-child,
         .director p:first-child {
-            margin-bottom: 0.3cm !important; /* Separa el título del nombre */
+            margin-bottom: 0.3cm !important; 
         }
 
         .form-container {
-            margin-top: 0.7cm;  /* Espacio superior */
-            padding-top: 0.5cm; /* Espacio interno superior */
+            margin-top: 0.7cm; 
+            padding-top: 0.5cm; 
             position: relative;
-            height: auto;       /* Altura automática */
-            min-height: 1.5cm;    /* Altura mínima opcional */
+            height: auto;      
+            min-height: 1.5cm;    
         }
-        
-@media print {
-    /* Oculta completamente el encabezado */
-    .header-container {
-        display: none !important;
-        visibility: hidden !important;
-        height: 0 !important;
-        padding: 0 !important;
-        margin: 0 !important;
-    }
-    
-    /* Asegura que el contenedor principal ocupe toda la página */
-    .page-container {
-        margin: 0 !important;
-        padding: 2.2cm 2cm 2cm 3.5cm !important;
-        width: 21.6cm !important;
-        min-height: 27.9cm !important;
-        box-shadow: none !important;
-        position: relative !important;
-    }
-    
-    /* Elimina cualquier espacio adicional */
-    body {
-        padding: 0 !important;
-        margin: 0 !important;
-        background: white !important;
-    }
-    
-    /* Mantén visibles solo los elementos necesarios */
-    .action-buttons,
-    .btn-save {
-        display: none !important;
-    }
-}
-        @page{
+
+        .data-display {
+            display: inline-block;
+            min-width: 1.5cm;
+            text-align: center;
+            padding: 0 2px;
+            border-bottom: 1px solid black;
+            line-height: 1em;
+            font-size: inherit;
+            vertical-align: top;
+            margin-bottom: -0.2em;
+        }
+        .cedula-profesional {
+            font-family: Arial;
+            font-size: 8pt;     
+            margin: 0;          
+            line-height: 1.2;   
+            text-align: center;  
+        }
+        .oval-figure {
+            position: absolute;
+            left: 1.3cm;
+            top: 9.5cm;
+            width: 3.2cm;
+            height: 4.9cm;
+            border-radius: 50%; 
+            border: 1px solid #000;  
+            background-color: transparent;  
+        }
+        @media print {
+            .header-container {
+                display: none !important;
+                visibility: hidden !important;
+                height: 0 !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            
+            .page-container {
+                margin: 0 !important;
+                padding: 2.2cm 2cm 2cm 3.5cm !important;
+                width: 21.6cm !important;
+                min-height: 27.9cm !important;
+                box-shadow: none !important;
+                position: relative !important;
+            }
+            
+            body {
+                padding: 0 !important;
+                margin: 0 !important;
+                background: white !important;
+            }
+            
+            .action-buttons,
+            .btn-save {
+                display: none !important;
+            }
+        }
+
+        @page {
             size: A4;
             margin: 0;
         }
@@ -413,7 +456,10 @@
           {% load static %}
         
         <div class="action-buttons">
-            <button class="btn btn-back" onclick="window.history.back()">Regresar</button>
+            <form action="{% url 'acta_form' %}" method="POST" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-back">Regresar</button>
+        </form>
             <button class="btn btn-pdf" onclick="generatePDF()">Generar PDF</button>
         </div>
     </div>
@@ -421,10 +467,9 @@
     <!-- Contenedor principal (hoja de Word) -->
     <div class="page-container">
         <!-- Óvalo a la izquierda -->
-        <img src="tu_imagen_ovalada.jpg" alt="" class="oval-photo">
-        
+         <div class="oval-figure"></div>
         <!-- Imagen a la derecha -->
-        <img src="{% static 'IMG/logo.png' %}" alt="Imagen derecha" class="right-image">
+        <img src="{% static 'IMG/Logo.png' %}" alt="Imagen derecha" class="right-image">
         
         <div class="header">
             <p class="institutional-text">GOBIERNO DEL ESTADO DE VERACRUZ DE IGNACIO DE LA LLAVE</p>
@@ -432,52 +477,51 @@
             <p class="document-title">ACTA DE EXAMEN PROFESIONAL</p>
         </div>
         
-         <form method="post" id="main-form" class="form-container" action="{% url 'Acta_guardar' titulacion.id %}">
-            {% csrf_token %}
+        <div class="form-container">
             <p class="text-justify">
-                En &nbsp; &nbsp;&nbsp;la &nbsp;&nbsp; &nbsp;Ciudad&nbsp;&nbsp;&nbsp;de &nbsp; &nbsp; &nbsp;<u>Acayucan</u>, Ver., a los
-                <input type="text" name="dia_examen" id="dia_examen" class="input-text input-day" value="{{ form.dia_examen.value|default:'1' }}" maxlength="2">días&nbsp; del &nbsp;mes &nbsp;de<input type="text" name="mes_examen" id="mes_examen" class="input-text input-month" value="{{ form.mes_examen.value|default:'enero' }}"> de 
-                <input type="text" name="anio_examen" id="anio_examen" class="input-text input-year" value="{{ form.anio_examen.value|default:'2025' }}" maxlength="4">, siendo las 
-                <input type="text" name="hora_inicio" id="hora_inicio" class="input-text input-time" value="{{ form.hora_inicio.value|default:'12:00' }}" placeholder="HH:MM" maxlength="5"> horas, se reunieron 
+                En &nbsp; &nbsp;&nbsp;la &nbsp;&nbsp; &nbsp;Ciudad&nbsp;&nbsp;&nbsp;de &nbsp; &nbsp; &nbsp;Acayucan, Ver., a los 
+                <span class="data-display">{{ alumno.acta.dia_examen|default:'1' }}</span> días&nbsp; del &nbsp;mes &nbsp;de 
+                <span class="data-display">{{ alumno.acta.mes_examen|default:'enero' }}</span> de 
+                <span class="data-display">{{ alumno.acta.anio_examen|default:'2025' }}</span>, siendo las 
+                <span class="data-display">{{ alumno.acta.hora_inicio|default:'12:00' }}</span> horas, se reunieron 
                 en <u>La Sala de Titulación Virtual</u> del Instituto Tecnológico Superior de 
                 <u>Acayucan</u>, clave <u>30EIT0010B</u>, los integrantes del Jurado.
             </p>
 
             <p class="text-justify">Presidente (a): 
-                {% if titulacion.asesor %}
+                {% if alumno.asesor %}
                 <span class="nombre-subrayado">
-                    {{ titulacion.asesor.sigla }} 
-                    {{ titulacion.asesor.nombreProfesor }}
-                    {{ titulacion.asesor.apellidoPaterno }} 
-                    {{ titulacion.asesor.apellidoMaterno }}
-                    </span>
+                    {{ alumno.asesor.sigla }} 
+                    {{ alumno.asesor.nombreProfesor }}
+                    {{ alumno.asesor.apellidoPaterno }} 
+                    {{ alumno.asesor.apellidoMaterno }}
+                </span>
                 {% else %}
                     -
                 {% endif %}
             </p>
             
-
             <p class="text-justify">Secretario (a): 
-                {% if titulacion.revisor_1 %}
-                 <span class="nombre-subrayado">
-                    {{ titulacion.revisor_1.sigla }} 
-                    {{ titulacion.revisor_1.nombreProfesor }}
-                    {{ titulacion.revisor_1.apellidoPaterno }} 
-                    {{ titulacion.revisor_1.apellidoMaterno }}
-                    </span>
+                {% if alumno.revisor_1 %}
+                <span class="nombre-subrayado">
+                    {{ alumno.revisor_1.sigla }} 
+                    {{ alumno.revisor_1.nombreProfesor }}
+                    {{ alumno.revisor_1.apellidoPaterno }} 
+                    {{ alumno.revisor_1.apellidoMaterno }}
+                </span>
                 {% else %}
                     -
                 {% endif %}
             </p>
 
-            <p class="text-justify">Vocal: 
-                {% if titulacion.revisor_2 %}
+            <p class="text-justify">Vocal:
+                {% if alumno.revisor_2 %}
                 <span class="nombre-subrayado2">
-                    {{ titulacion.revisor_2.sigla }} 
-                    {{ titulacion.revisor_2.nombreProfesor }}
-                    {{ titulacion.revisor_2.apellidoPaterno }} 
-                    {{ titulacion.revisor_2.apellidoMaterno }}
-                    </span>
+                    {{ alumno.revisor_2.sigla }} 
+                    {{ alumno.revisor_2.nombreProfesor }}
+                    {{ alumno.revisor_2.apellidoPaterno }} 
+                    {{ alumno.revisor_2.apellidoMaterno }}
+                </span>
                 {% else %}
                     -
                 {% endif %}
@@ -488,60 +532,61 @@
                 procedió&nbsp;&nbsp; a&nbsp; &nbsp;efectuar&nbsp; &nbsp;el &nbsp;&nbsp;Acto&nbsp; &nbsp;de&nbsp; Recepción &nbsp;Profesional&nbsp; &nbsp;a &nbsp;&nbsp;el &nbsp;&nbsp;(la)&nbsp;&nbsp;
             </p>              
             <p class="text-justify"> 
-                C. <span class="linea-firma">{{ titulacion.nombre }} {{titulacion.apellido_paterno}} {{titulacion.apellido_materno}}</span>No. de Control
-                <span class="linea-firma3">{{ titulacion.matricula }}</span>  egresado &nbsp; &nbsp;&nbsp; (a)  &nbsp; &nbsp;&nbsp;del  &nbsp; &nbsp;&nbsp;Instituto &nbsp; &nbsp;&nbsp; Tecnológico &nbsp; &nbsp;&nbsp; Superior  &nbsp; &nbsp;&nbsp;de 
+                C. <span class="linea-firma">{{ alumno.nombre }} {{alumno.apellido_paterno}} {{alumno.apellido_materno}}</span>No. de Control
+                <span class="linea-firma3">{{ alumno.matricula }}</span>  egresado &nbsp; &nbsp;&nbsp; (a)  &nbsp; &nbsp;&nbsp;del  &nbsp; &nbsp;&nbsp;Instituto &nbsp; &nbsp;&nbsp; Tecnológico &nbsp; &nbsp;&nbsp; Superior  &nbsp; &nbsp;&nbsp;de 
                 <u>Acayucan</u>,&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;pasante &nbsp; &nbsp;&nbsp;de&nbsp; &nbsp;&nbsp; la carrera de
-                <span class="linea-firma">{{ titulacion.carrera }}</span>.
+                <span class="linea-firma">{{ alumno.carrera }}</span>.
             </p>
-            <br> <!-- Salto de línea -->
+            <br>
             <p class="text-justify">
                 Tomando en cuenta los integrantes del Jurado, el contenido del Trabajo Profesional,
-                cuyo tema es: <span class="linea-firma1">{{ titulacion.nombre_del_proyecto }}.</span>
+                cuyo tema es: <span class="linea-firma1">{{ alumno.nombre_del_proyecto }}.</span>
                 <span class="linea-firma2"></span><br>
                 <span class="linea-firma2"></span>
                 y la réplica del mismo, dictaminó que fuera 
-                <input type="text" name="dictamen" id="dictamen" class="input-text" value="Aprobado" style="width: 6.3cm; text-align: center;">
+                <span class="data-display" style="width: 6.3cm;">{{ alumno.acta.dictamen|default:'Aprobado' }}</span>
             </p>
-            <br> <!-- Salto de línea -->        
+            <br>
             <p class="text-justify">
                 El (la) Presidente (a) del Jurado le hizo saber al sustentante el resultado obtenido,
                 el Código de Ética Profesional y le tomó la Protesta de Ley. Dándose por terminado
-                el Acto a las <input type="text" name="hora_fin" id="hora_fin" class="input-text input-time" value="{{ form.hora_fin.value|default:'13:00' }}" placeholder="HH:MM" maxlength="5"> horas, se asentó la presente en el libro para Actas de Examen
-                Profesional por Titulación Integral No. <input type="text" name="libro" id="libro" class="input-text input-number" value="{{ form.libro.value|default:'1' }}"> a las 
-                <input type="text" name="foja" id="foja" class="input-text input-number" value="{{ form.foja.value|default:'1' }}"> fojas, autorizado por la H.
+                el Acto a las <span class="data-display">{{ alumno.acta.hora_fin|default:'13:00' }}</span> horas, se asentó la presente en el libro para Actas de Examen
+                Profesional por Titulación Integral No. <span class="data-display">{{ alumno.acta.libro|default:'1' }}</span> a las 
+                <span class="data-display">{{ alumno.acta.foja|default:'1' }}</span> fojas, autorizado por la H.
                 Junta Directiva del Instituto Tecnológico Superior de <u>Acayucan</u>, fecha 
-                <input type="text" name="dia_firma" id="dia_firma" class="input-text input-day" value="{{ form.dia_firma.value|default:'1' }}" maxlength="2"> de 
-                <input type="text" name="mes_firma" id="mes_firma" class="input-text input-month" value="{{ form.mes_firma.value|default:'enero' }}"> de 
-                <input type="text" name="anio_firma" id="anio_firma" class="input-text input-year" value="{{ form.anio_firma.value|default:'2025' }}" maxlength="4">
+                <span class="data-display">{{ alumno.acta.dia_examen|default:'1' }}</span> de 
+                <span class="data-display">{{ alumno.acta.mes_examen|default:'enero' }}</span> de 
+                <span class="data-display">{{ alumno.acta.anio_examen|default:'2025' }}</span>
                 y una vez escrita, leída y aprobada la firmaron
                 para constancia las personas que en el acto intervinieron.
             </p>
-            <br> <!-- Salto de línea -->
+            <br>
             <p class="text-justify">
                 Para los usos legales correspondientes, se expide la presente en la Ciudad de
-                Acayucan, Veracruz, a los <input type="text" name="dia_firmma" id="dia_firmma" class="input-text input-day" value="{{ form.dia_firmma.value|default:'1' }}" maxlength="2"> días del mes de 
-                <input type="text" name="mes_firma_final" id="mes_firma_final" class="input-text input-month" value="{{ form.mes_firma_final.value|default:'enero' }}"> del año 
-                <input type="text" name="anio_firmma" id="anio_firmma" class="input-text input-year" value="{{ form.anio_firmma.value|default:'2023' }}" maxlength="4">.
+                Acayucan, Veracruz, a los <span class="data-display">{{ alumno.acta.dia_firma|default:'1' }}</span> días del mes de 
+                <span class="data-display">{{ alumno.acta.mes_firma|default:'enero' }}</span> del año 
+                <span class="data-display">{{ alumno.acta.anio_firma|default:'2025' }}</span>.
             </p>
-        </form>
-         <!-- Sección de firmas -->
+        </div>
+        
+        <!-- Sección de firmas -->
         <div class="signature-section">
             <div class="president">
                 <p>PRESIDENTE (A)</p>
                 <p>
-                    {% if titulacion.asesor %}
-                        {{ titulacion.asesor.sigla }} 
-                        {{ titulacion.asesor.nombreProfesor }}
-                        {{ titulacion.asesor.apellidoPaterno }} 
-                        {{ titulacion.asesor.apellidoMaterno }}
+                    {% if alumno.asesor %}
+                        {{ alumno.asesor.sigla }} 
+                        {{ alumno.asesor.nombreProfesor }}
+                        {{ alumno.asesor.apellidoPaterno }} 
+                        {{ alumno.asesor.apellidoMaterno }}
                     {% else %}
                         -
                     {% endif %}
                 </p>
                 <div class="signature-line"></div>
-                <p>CÉDULA PROFESIONAL: 
-                    {% if titulacion.asesor.cedulaProfesor %}
-                        {{ titulacion.asesor.cedulaProfesor }}
+                <p class="cedula-profesional">CÉDULA PROFESIONAL: 
+                    {% if alumno.asesor.cedulaProfesor %}
+                        {{ alumno.asesor.cedulaProfesor }}
                     {% else %}
                         -
                     {% endif %}
@@ -552,19 +597,19 @@
                 <div class="secretary">
                     <p>SECRETARIO (A)</p>
                     <p>
-                        {% if titulacion.revisor_1 %}
-                            {{ titulacion.revisor_1.sigla }} 
-                            {{ titulacion.revisor_1.nombreProfesor }}
-                            {{ titulacion.revisor_1.apellidoPaterno }} 
-                            {{ titulacion.revisor_1.apellidoMaterno }}
+                        {% if alumno.revisor_1 %}
+                            {{ alumno.revisor_1.sigla }} 
+                            {{ alumno.revisor_1.nombreProfesor }}
+                            {{ alumno.revisor_1.apellidoPaterno }} 
+                            {{ alumno.revisor_1.apellidoMaterno }}
                         {% else %}
                             -
                         {% endif %}
                     </p>
                     <div class="signature-line2"></div>
-                    <p>CÉDULA PROFESIONAL: 
-                        {% if titulacion.revisor_1.cedulaProfesor %}
-                            {{ titulacion.revisor_1.cedulaProfesor }}
+                    <p class="cedula-profesional">CÉDULA PROFESIONAL: 
+                        {% if alumno.revisor_1.cedulaProfesor %}
+                            {{ alumno.revisor_1.cedulaProfesor }}
                         {% else %}
                             -
                         {% endif %}
@@ -574,19 +619,19 @@
                 <div class="vocal">
                     <p>VOCAL</p>
                     <p>
-                        {% if titulacion.revisor_2 %}
-                            {{ titulacion.revisor_2.sigla }} 
-                            {{ titulacion.revisor_2.nombreProfesor }}
-                            {{ titulacion.revisor_2.apellidoPaterno }} 
-                            {{ titulacion.revisor_2.apellidoMaterno }}
+                        {% if alumno.revisor_2 %}
+                            {{ alumno.revisor_2.sigla }} 
+                            {{ alumno.revisor_2.nombreProfesor }}
+                            {{ alumno.revisor_2.apellidoPaterno }} 
+                            {{ alumno.revisor_2.apellidoMaterno }}
                         {% else %}
                             -
                         {% endif %}
                     </p>
                     <div class="signature-line3"></div>
-                    <p>CÉDULA PROFESIONAL: 
-                        {% if titulacion.revisor_2.cedulaProfesor %}
-                            {{ titulacion.revisor_2.cedulaProfesor }}
+                    <p class="cedula-profesional">CÉDULA PROFESIONAL: 
+                        {% if alumno.revisor_2.cedulaProfesor %}
+                            {{ alumno.revisor_2.cedulaProfesor }}
                         {% else %}
                             -
                         {% endif %}
@@ -594,100 +639,48 @@
                 </div>
             </div>
             
-           <div class="director">
+            <div class="director">
                 <p>DIRECTOR (A)</p>
                 <p><input type="text" name="nombre_director" id="nombre_director" class="input-text" 
                    value="{{ form.nombre_director.value|default:'DR. Ricardo Ávila García.' }}" 
                    style="width: 200px; text-align: center;"></p>
             </div>
         </div>
-         <!-- Botón de guardar en el header -->
-        <form method="post" style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);">
-            {% csrf_token %}
-            <button type="submit" class="btn-save">Guardar Cambios</button>
-        </form>
     </div>
     
     <script>
         function generatePDF() {
-            // Aquí iría tu lógica para generar el PDF
-            window.print(); // Esto es solo un ejemplo
-        }
-        
-        // Función para guardar los datos en localStorage
-        function saveFormData() {
-            const formData = {
-                dia_examen: document.getElementById('dia_examen').value,
-                mes_examen: document.getElementById('mes_examen').value,
-                anio_examen: document.getElementById('anio_examen').value,
-                hora_inicio: document.getElementById('hora_inicio').value,
-                dictamen: document.getElementById('dictamen').value,
-                hora_fin: document.getElementById('hora_fin').value,
-                libro: document.getElementById('libro').value,
-                foja: document.getElementById('foja').value,
-                dia_firma: document.getElementById('dia_firma').value,
-                mes_firma: document.getElementById('mes_firma').value,
-                anio_firma: document.getElementById('anio_firma').value,
-                dia_firmma: document.getElementById('dia_firmma').value,
-                mes_firma_final: document.getElementById('mes_firma_final').value,
-                anio_firmma: document.getElementById('anio_firmma').value,
-                nombre_director: document.getElementById('nombre_director').value
+            const matricula = "{{ alumno.matricula }}";
+            const element = document.querySelector('.page-container');
+            const opt = {
+                margin: 0,
+                filename: `Acta de ${matricula}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { 
+                    scale: 2,
+                    useCORS: true,
+                },
+                jsPDF: { unit: 'cm', format: 'a4', orientation: 'portrait' }
             };
-            
-            localStorage.setItem('actaTitulacionData', JSON.stringify(formData));
+
+            html2pdf()
+                .set(opt)
+                .from(element)
+                .toPdf()
+                .get('pdf')
+                .then(function(pdf) {
+                    const pdfBlob = pdf.output('blob');
+                    const pdfUrl = URL.createObjectURL(pdfBlob);
+                    const newWindow = window.open(pdfUrl, '_blank');
+                    
+                    if (!newWindow || newWindow.closed) {
+                        const a = document.createElement('a');
+                        a.href = pdfUrl;
+                        a.download = `Acta de ${matricula}.pdf`;
+                        a.click();
+                    }
+                });
         }
-        
-        // Función para cargar los datos guardados
-        function loadFormData() {
-            const savedData = localStorage.getItem('actaTitulacionData');
-            if (savedData) {
-                const formData = JSON.parse(savedData);
-                
-                // Asignar los valores a los campos del formulario
-                document.getElementById('dia_examen').value = formData.dia_examen || '';
-                document.getElementById('mes_examen').value = formData.mes_examen || '';
-                document.getElementById('anio_examen').value = formData.anio_examen || '';
-                document.getElementById('hora_inicio').value = formData.hora_inicio || '';
-                document.getElementById('dictamen').value = formData.dictamen || 'Aprobado';
-                document.getElementById('hora_fin').value = formData.hora_fin || '';
-                document.getElementById('libro').value = formData.libro || '';
-                document.getElementById('foja').value = formData.foja || '';
-                document.getElementById('dia_firma').value = formData.dia_firma || '';
-                document.getElementById('mes_firma').value = formData.mes_firma || '';
-                document.getElementById('anio_firma').value = formData.anio_firma || '';
-                document.getElementById('dia_firmma').value = formData.dia_firmma || '';
-                document.getElementById('mes_firma_final').value = formData.mes_firma_final || '';
-                document.getElementById('anio_firmma').value = formData.anio_firmma || '';
-                document.getElementById('nombre_director').value = formData.nombre_director || 'DR. Ricardo Ávila García';
-            }
-        }
-        
-        // Manejar el envío del formulario
-        document.addEventListener('DOMContentLoaded', function() {
-            // Cargar datos guardados al iniciar la página
-            loadFormData();
-            
-            const saveButton = document.querySelector('.btn-save');
-            const mainForm = document.getElementById('main-form');
-            
-            // Guardar datos cuando se hace clic en el botón de guardar
-            saveButton.addEventListener('click', function(e) {
-                e.preventDefault();
-                saveFormData();
-                mainForm.submit();
-            });
-            
-            // Guardar datos automáticamente cuando se cambia un campo
-            const inputs = document.querySelectorAll('input[type="text"]');
-            inputs.forEach(input => {
-                input.addEventListener('change', saveFormData);
-            });
-            
-            // Guardar datos cuando se cierra la pestaña o se recarga la página
-            window.addEventListener('beforeunload', function(e) {
-                saveFormData();
-            });
-        });
     </script>
 </body>
 </html>
